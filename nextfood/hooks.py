@@ -46,7 +46,8 @@ app_license = "mit"
 # doctype_js = {"Stock Entry" : "public/js/snf_calculation.js",
 #               "Purchase Receipt" : "public/js/fat_clr.js"}
 doctype_js = {
-              "Purchase Receipt" : "public/js/fat_clr.js"}
+              "Purchase Receipt" : "public/js/fat_clr.js",
+              "Quality Inspection":"public/js/quality.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -139,7 +140,12 @@ doctype_js = {
 # Document Events
 # ---------------
 # Hook on document methods and events
-
+doc_events = {
+    "Quality Inspection": {
+        "on_submit": "nextfood.public.py.quality_inspection_fat.update_qc_number",
+        # "after_save": "nextfood.public.py.purchase_receipt_snf_fat.update_fatkg_snfkg"
+    }
+}
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -261,6 +267,13 @@ fixtures = [
         ]
     ]},
     {"dt":"Property Setter","filters":[
+        [
+        "module","in",[
+                "Nextfood"
+            ]
+        ]
+    ]},
+    {"dt":"Workspace","filters":[
         [
         "module","in",[
                 "Nextfood"

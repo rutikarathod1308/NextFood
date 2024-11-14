@@ -22,7 +22,21 @@ class custom_calculate_taxes_and_totals(calculate_taxes_and_totals):
                             item.item_tax_amount = 0.0
                             
 
-   
+        elif self.doc.doctype == 'Purchase Invoice':
+            for item in self.doc.items:
+                if item.item_group == "MILK":
+                    if item.doctype in ["Purchase Invoice Item"]:
+                            print("It's Corrected Way...:)")
+                            item.amount = flt((item.custom_basic_rate/6.5*60*item.custom_fat_kg) + (item.custom_basic_rate/8.5*40*item.custom_snf_kg))
+                            
+
+                            item.net_amount = item.amount
+
+                            self._set_in_company_currency(
+					        item, ["price_list_rate", "rate", "net_rate", "amount", "net_amount"]
+				            )
+
+                            item.item_tax_amount = 0.0
 
                             
                             

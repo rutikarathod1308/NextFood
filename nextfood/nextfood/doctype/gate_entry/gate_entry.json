@@ -13,16 +13,16 @@
   "party_type",
   "supplier",
   "outward_for",
-  "outward_entry",
   "column_break_om2y0",
   "gate_in_date",
+  "inspection_required",
   "gate_in_time",
   "remarks",
   "is_gate_out",
   "gate_out_date",
   "gate_out_time",
+  "outward_entry",
   "section_break_qaj4p",
-  "get_data",
   "stock_item_tab",
   "section_break_s4rhw",
   "driver_name",
@@ -37,8 +37,6 @@
   "column_break_52oid",
   "weight_in_date",
   "weight_in_time",
-  "quality_inspection_section",
-  "qc_details",
   "section_break_tbmnr",
   "is_unloaded",
   "unloading_person",
@@ -49,13 +47,12 @@
   "is_weight_out",
   "weight_out",
   "net_weight",
+  "lr_no",
   "column_break_jx1uc",
   "weight_out_date",
   "weight_out_time",
   "transporter_name",
-  "lr_no",
-  "company",
-  "edit_gate_in_date_and_time"
+  "company"
  ],
  "fields": [
   {
@@ -71,22 +68,24 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Entry Type",
-   "options": "\nInward\nOutward\nOther"
+   "options": "\nInward\nOutward\nOthers"
   },
   {
    "fieldname": "purpose",
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Purpose",
-   "options": "\nRaw Milk Material\nPacking Material"
+   "options": "\nRaw Milk Material\nPacking Material\nOther"
   },
   {
+   "depends_on": "eval:doc.entry_type == \"Inward\" || doc.entry_type == \"Outward\"",
    "fieldname": "party_type",
    "fieldtype": "Link",
    "label": "Party Type ",
    "options": "DocType"
   },
   {
+   "depends_on": "eval:doc.entry_type == \"Inward\" || doc.entry_type == \"Outward\"",
    "fieldname": "supplier",
    "fieldtype": "Dynamic Link",
    "label": "Party",
@@ -97,7 +96,6 @@
    "fieldname": "outward_for",
    "fieldtype": "Link",
    "label": "Outward For",
-   "mandatory_depends_on": "eval: doc.entry_type == 'Outward';",
    "options": "DocType"
   },
   {
@@ -136,11 +134,13 @@
    "label": "Is Gate Out"
   },
   {
+   "depends_on": "is_gate_out",
    "fieldname": "gate_out_date",
    "fieldtype": "Date",
    "label": "Gate Out Date "
   },
   {
+   "depends_on": "is_gate_out",
    "fieldname": "gate_out_time",
    "fieldtype": "Time",
    "label": "Gate Out Time"
@@ -150,16 +150,10 @@
    "fieldtype": "Section Break"
   },
   {
-   "depends_on": "eval: doc.entry_type == 'Outward';",
-   "fieldname": "get_data",
-   "fieldtype": "Button",
-   "label": "Get Data \u21b4"
-  },
-  {
    "fieldname": "stock_item_tab",
    "fieldtype": "Table",
    "label": "Stock Item",
-   "options": "Gate Entry Stock Items"
+   "options": "Gate Entry Item"
   },
   {
    "fieldname": "section_break_s4rhw",
@@ -232,17 +226,6 @@
    "fieldtype": "Time",
    "label": "Weight in Time",
    "read_only_depends_on": "is_weight_in"
-  },
-  {
-   "fieldname": "quality_inspection_section",
-   "fieldtype": "Section Break",
-   "label": "Quality Inspection"
-  },
-  {
-   "fieldname": "qc_details",
-   "fieldtype": "Table",
-   "label": "QC Details",
-   "options": "Gate Entry QC"
   },
   {
    "fieldname": "section_break_tbmnr",
@@ -351,16 +334,16 @@
    "reqd": 1
   },
   {
-   "default": "0",
-   "fieldname": "edit_gate_in_date_and_time",
+   "default": "1",
+   "fieldname": "inspection_required",
    "fieldtype": "Check",
-   "label": "Edit Gate In Date and Time"
+   "label": "Inspection Required"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-11 10:57:40.036079",
+ "modified": "2024-11-14 17:17:16.818785",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry",

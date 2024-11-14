@@ -40,11 +40,19 @@ frappe.ui.form.on("Purchase Receipt", {
                     frm.clear_table("items");
 
                     for (var i = 0; i < len; i++) {
+                        var a = (stock_items[i].clr / 4 + 0.2 * stock_items[i].fat + 0.14).toFixed(2);
+                        var b = (stock_items[i].qty * a / 100).toFixed(2);
+                        var c = (stock_items[i].qty * stock_items[i].fat / 100).toFixed(2);
                         var row = frm.add_child("items");
-                        row.item_code = stock_items[i].item;
+                        row.item_code = stock_items[i].item_code;
                         row.item_name = stock_items[i].item_name;
                         row.uom = stock_items[i].uom;
                         row.qty = stock_items[i].qty;
+                        row.custom_fat = stock_items[i].fat;
+                        row.custom_clr = stock_items[i].clr;
+                        row.custom_snf = a;
+                        row.custom_snf_kg = b;
+                        row.custom_fat_kg = c;
 
                     }
 
@@ -54,6 +62,30 @@ frappe.ui.form.on("Purchase Receipt", {
                 }
             }
         });
+    },
+    refresh:function(frm){
+        frm.set_query("custom_gate_entry",function(){
+            return {
+            filters:{
+                "docstatus" : 1,
+                "entry_type":"Inward",
+                "supplier":cur_frm.doc.supplier
+
+            }
+        }
+        })
+    },
+    supplier:function(frm){
+        frm.set_query("custom_gate_entry",function(){
+            return {
+            filters:{
+                "docstatus" : 1,
+                "entry_type":"Inward",
+                "supplier":cur_frm.doc.supplier
+
+            }
+        }
+        })
     }
 });
 
