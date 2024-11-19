@@ -1,0 +1,124 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-19 13:27:26.919764",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "fat",
+  "section_break_mmtv",
+  "8",
+  "81",
+  "82",
+  "83",
+  "column_break_ibjt",
+  "84",
+  "85",
+  "86",
+  "87",
+  "column_break_jjfz",
+  "88",
+  "89",
+  "9",
+  "91",
+  "92"
+ ],
+ "fields": [
+  {
+   "fieldname": "fat",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Fat"
+  },
+  {
+   "fieldname": "section_break_mmtv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "8",
+   "fieldtype": "Float",
+   "label": "8"
+  },
+  {
+   "fieldname": "81",
+   "fieldtype": "Float",
+   "label": "8.1"
+  },
+  {
+   "fieldname": "82",
+   "fieldtype": "Float",
+   "label": "8.2"
+  },
+  {
+   "fieldname": "83",
+   "fieldtype": "Float",
+   "label": "8.3"
+  },
+  {
+   "fieldname": "column_break_ibjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "84",
+   "fieldtype": "Float",
+   "label": "8.4"
+  },
+  {
+   "fieldname": "85",
+   "fieldtype": "Float",
+   "label": "8.5"
+  },
+  {
+   "fieldname": "86",
+   "fieldtype": "Float",
+   "label": "8.6"
+  },
+  {
+   "fieldname": "87",
+   "fieldtype": "Float",
+   "label": "8.7"
+  },
+  {
+   "fieldname": "column_break_jjfz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "88",
+   "fieldtype": "Float",
+   "label": "8.8"
+  },
+  {
+   "fieldname": "89",
+   "fieldtype": "Float",
+   "label": "8.9"
+  },
+  {
+   "fieldname": "9",
+   "fieldtype": "Float",
+   "label": "9"
+  },
+  {
+   "fieldname": "91",
+   "fieldtype": "Float",
+   "label": "9.1"
+  },
+  {
+   "fieldname": "92",
+   "fieldtype": "Float",
+   "label": "9.2"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-11-19 13:46:03.447070",
+ "modified_by": "Administrator",
+ "module": "Nextfood",
+ "name": "Milk Rate Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

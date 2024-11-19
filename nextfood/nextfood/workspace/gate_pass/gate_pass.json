@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"ji9kPYX426\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Gate Pass</span>\",\"col\":12}},{\"id\":\"SeyqYg7HUY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate In\",\"col\":3}},{\"id\":\"pYxIqBVuoB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Out\",\"col\":3}}]",
+ "content": "[{\"id\":\"ji9kPYX426\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Gate Pass</span>\",\"col\":12}},{\"id\":\"pYxIqBVuoB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Out\",\"col\":3}},{\"id\":\"SeyqYg7HUY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate In\",\"col\":3}},{\"id\":\"Ofv4YjsKoG\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"_CjYXin2m1\",\"type\":\"card\",\"data\":{\"card_name\":\"Master\",\"col\":4}}]",
  "creation": "2024-11-14 12:24:15.456349",
  "custom_blocks": [],
  "docstatus": 0,
@@ -12,8 +12,28 @@
  "indicator_color": "",
  "is_hidden": 0,
  "label": "Gate Pass",
- "links": [],
- "modified": "2024-11-14 13:13:45.983302",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Master",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "MILK Rate",
+   "link_count": 0,
+   "link_to": "MILK Rate",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-11-19 13:38:24.235823",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Pass",

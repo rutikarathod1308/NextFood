@@ -86,7 +86,8 @@ frappe.ui.form.on("Purchase Receipt", {
             }
         }
         })
-    }
+    },
+    
 });
 
 // frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn) {

@@ -47,7 +47,8 @@ app_license = "mit"
 #               "Purchase Receipt" : "public/js/fat_clr.js"}
 doctype_js = {
               "Purchase Receipt" : "public/js/fat_clr.js",
-              "Quality Inspection":"public/js/quality.js"}
+              "Quality Inspection":"public/js/quality.js",
+              "Stock Entry" : "public/js/snf_calculation.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -142,9 +143,20 @@ doctype_js = {
 # Hook on document methods and events
 doc_events = {
     "Quality Inspection": {
-        "on_submit": "nextfood.public.py.quality_inspection_fat.update_qc_number",
-        # "after_save": "nextfood.public.py.purchase_receipt_snf_fat.update_fatkg_snfkg"
+        "on_submit": "nextfood.public.py.quality_inspection_fat.update_qc_number"
+        
+    },
+    "Purchase Receipt":{
+        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.update_fatkg_snfkg",
+        "on_cancel":"nextfood.public.py.purchase_receipt_snf_fat.after_cancel_fatkg_snfkg"
+
+    },
+    "Stock Entry":{
+        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg",
+        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_update_fatkg_snfkg",
+        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_material_fatkg_snfkg"
     }
+    
 }
 # doc_events = {
 # 	"*": {
