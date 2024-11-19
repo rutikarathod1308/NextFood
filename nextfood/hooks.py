@@ -291,5 +291,12 @@ fixtures = [
                 "Nextfood"
             ]
         ]
+    ]},
+     {"dt":"Report","filters":[
+        [
+        "module","in",[
+                "Nextfood"
+            ]
+        ]
     ]}
 ]

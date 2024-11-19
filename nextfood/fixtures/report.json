@@ -1,0 +1,51 @@
+[
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "",
+  "modified": "2024-11-19 12:11:34.541236",
+  "module": "Nextfood",
+  "name": "Fat Kg And Snf Kg Profit Loss",
+  "prepared_report": 0,
+  "query": "select \nse.custom_purchase_receipt as 'Purchase Receipt',\nsed.item_code as 'Item Code',\nsed.qty as 'Qty',\nsed.custom_purchase_fat as 'Purchase Fat ',\nsed.custom_purchase_clr as 'Purchase CLR',\nsed.custom_purchase_fat_kg as 'Purchase Fat KG',\nsed.custom_purchase_snf_kg as 'Purchase SNF KG',\nse.name as 'Stock Entry No',\nsed.custom_fat as 'Transfer Fat ',\nsed.custom_clr as 'Transfer CLR',\nsed.custom_fat_kg as 'Transfer Fat KG',\nsed.custom_snf_kg as 'Transfer SNF KG',\nsed.custom_purchase_fat_kg - sed.custom_fat_kg as ' Diff Fat KG',\nsed.custom_purchase_snf_kg - sed.custom_snf_kg as ' Diff SNF KG'\nfrom `tabStock Entry` se join `tabStock Entry Detail` sed \non sed.parent = se.name\nwhere\nse.stock_entry_type = \"Material Transfer\"\nAND\nse.custom_fat_is_different = 1",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Fat Kg And Snf Kg Profit Loss",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Fat Kg And Snf Kg Profit Loss",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Fat Kg And Snf Kg Profit Loss",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Fat Kg And Snf Kg Profit Loss",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Fat Kg And Snf Kg Profit Loss",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   }
+  ],
+  "timeout": 0
+ }
+]
