@@ -7,25 +7,62 @@
  "engine": "InnoDB",
  "field_order": [
   "fat",
-  "snfclr",
   "section_break_mmtv",
-  "rate_8",
+  "rate_50",
+  "rate_51",
+  "rate_52",
+  "rate_53",
+  "rate_54",
+  "rate_55",
+  "rate_56",
+  "rate_57",
+  "rate_58",
+  "rate_59",
+  "column_break_jjfz",
+  "rate_60",
+  "rate_61",
+  "rate_62",
+  "rate_63",
+  "rate_64",
+  "rate_65",
+  "rate_66",
+  "rate_67",
+  "rate_68",
+  "rate_69",
+  "column_break_czzi",
+  "rate_70",
+  "rate_71",
+  "rate_72",
+  "rate_73",
+  "rate_74",
+  "rate_75",
+  "rate_76",
+  "rate_77",
+  "rate_78",
+  "rate_79",
+  "column_break_utig",
+  "rate_80",
   "rate_81",
   "rate_82",
   "rate_83",
-  "column_break_ibjt",
   "rate_84",
   "rate_85",
   "rate_86",
   "rate_87",
-  "column_break_jjfz",
   "rate_88",
   "rate_89",
-  "rate_9",
+  "column_break_ibjt",
+  "rate_90",
   "rate_91",
   "rate_92",
-  "clr_details_section",
-  "26"
+  "rate_93",
+  "rate_94",
+  "rate_95",
+  "rate_96",
+  "rate_97",
+  "rate_98",
+  "rate_99",
+  "rate_100"
  ],
  "fields": [
   {
@@ -35,7 +72,6 @@
    "label": "Fat"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "section_break_mmtv",
    "fieldtype": "Section Break",
    "label": "SNF Details"
@@ -49,105 +85,274 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "snfclr",
-   "fieldtype": "Select",
-   "label": "SNF/CLR",
-   "options": "SNF\nCLR"
-  },
-  {
-   "depends_on": "eval:doc.snfclr == \"CLR\"",
-   "fieldname": "clr_details_section",
-   "fieldtype": "Section Break",
-   "label": "CLR Details"
-  },
-  {
-   "fieldname": "26",
-   "fieldtype": "Float",
-   "label": "26"
-  },
-  {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
-   "fieldname": "rate_8",
-   "fieldtype": "Float",
-   "label": "8"
-  },
-  {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_81",
    "fieldtype": "Float",
    "label": "8.1"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_82",
    "fieldtype": "Float",
    "label": "8.2"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_83",
    "fieldtype": "Float",
    "label": "8.3"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_84",
    "fieldtype": "Float",
    "label": "8.4"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_85",
    "fieldtype": "Float",
    "label": "8.5"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_86",
    "fieldtype": "Float",
    "label": "8.6"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_87",
    "fieldtype": "Float",
    "label": "8.7"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_88",
    "fieldtype": "Float",
    "label": "8.8"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_89",
    "fieldtype": "Float",
    "label": "8.9"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
-   "fieldname": "rate_9",
-   "fieldtype": "Float",
-   "label": "9"
-  },
-  {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_91",
    "fieldtype": "Float",
    "label": "9.1"
   },
   {
-   "depends_on": "eval:doc.snfclr == \"SNF\"",
    "fieldname": "rate_92",
    "fieldtype": "Float",
    "label": "9.2"
+  },
+  {
+   "fieldname": "column_break_czzi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_utig",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rate_50",
+   "fieldtype": "Float",
+   "label": "5.0"
+  },
+  {
+   "fieldname": "rate_80",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "8.0"
+  },
+  {
+   "fieldname": "rate_90",
+   "fieldtype": "Float",
+   "label": "9.0"
+  },
+  {
+   "fieldname": "rate_51",
+   "fieldtype": "Float",
+   "label": "5.1"
+  },
+  {
+   "fieldname": "rate_52",
+   "fieldtype": "Float",
+   "label": "5.2"
+  },
+  {
+   "fieldname": "rate_53",
+   "fieldtype": "Float",
+   "label": "5.3"
+  },
+  {
+   "fieldname": "rate_54",
+   "fieldtype": "Float",
+   "label": "5.4"
+  },
+  {
+   "fieldname": "rate_55",
+   "fieldtype": "Float",
+   "label": "5.5"
+  },
+  {
+   "fieldname": "rate_56",
+   "fieldtype": "Float",
+   "label": "5.6"
+  },
+  {
+   "fieldname": "rate_57",
+   "fieldtype": "Float",
+   "label": "5.7"
+  },
+  {
+   "fieldname": "rate_58",
+   "fieldtype": "Float",
+   "label": "5.8"
+  },
+  {
+   "fieldname": "rate_59",
+   "fieldtype": "Float",
+   "label": "5.9"
+  },
+  {
+   "fieldname": "rate_60",
+   "fieldtype": "Float",
+   "label": "6.0"
+  },
+  {
+   "fieldname": "rate_61",
+   "fieldtype": "Float",
+   "label": "6.1"
+  },
+  {
+   "fieldname": "rate_62",
+   "fieldtype": "Float",
+   "label": "6.2"
+  },
+  {
+   "fieldname": "rate_63",
+   "fieldtype": "Float",
+   "label": "6.3"
+  },
+  {
+   "fieldname": "rate_64",
+   "fieldtype": "Float",
+   "label": "6.4"
+  },
+  {
+   "fieldname": "rate_65",
+   "fieldtype": "Float",
+   "label": "6.5"
+  },
+  {
+   "fieldname": "rate_66",
+   "fieldtype": "Float",
+   "label": "6.6"
+  },
+  {
+   "fieldname": "rate_67",
+   "fieldtype": "Float",
+   "label": "6.7"
+  },
+  {
+   "fieldname": "rate_68",
+   "fieldtype": "Float",
+   "label": "6.8"
+  },
+  {
+   "fieldname": "rate_69",
+   "fieldtype": "Float",
+   "label": "6.9"
+  },
+  {
+   "fieldname": "rate_70",
+   "fieldtype": "Float",
+   "label": "7.0"
+  },
+  {
+   "fieldname": "rate_71",
+   "fieldtype": "Float",
+   "label": "7.1"
+  },
+  {
+   "fieldname": "rate_72",
+   "fieldtype": "Float",
+   "label": "7.2"
+  },
+  {
+   "fieldname": "rate_73",
+   "fieldtype": "Float",
+   "label": "7.3"
+  },
+  {
+   "fieldname": "rate_74",
+   "fieldtype": "Float",
+   "label": "7.4"
+  },
+  {
+   "fieldname": "rate_75",
+   "fieldtype": "Float",
+   "label": "7.5"
+  },
+  {
+   "fieldname": "rate_76",
+   "fieldtype": "Float",
+   "label": "7.6"
+  },
+  {
+   "fieldname": "rate_77",
+   "fieldtype": "Float",
+   "label": "7.7"
+  },
+  {
+   "fieldname": "rate_78",
+   "fieldtype": "Float",
+   "label": "7.8"
+  },
+  {
+   "fieldname": "rate_79",
+   "fieldtype": "Float",
+   "label": "7.9"
+  },
+  {
+   "fieldname": "rate_93",
+   "fieldtype": "Float",
+   "label": "9.3"
+  },
+  {
+   "fieldname": "rate_94",
+   "fieldtype": "Float",
+   "label": "9.4"
+  },
+  {
+   "fieldname": "rate_95",
+   "fieldtype": "Float",
+   "label": "9.5"
+  },
+  {
+   "fieldname": "rate_96",
+   "fieldtype": "Float",
+   "label": "9.6"
+  },
+  {
+   "fieldname": "rate_97",
+   "fieldtype": "Float",
+   "label": "9.7"
+  },
+  {
+   "fieldname": "rate_98",
+   "fieldtype": "Float",
+   "label": "9.8"
+  },
+  {
+   "fieldname": "rate_99",
+   "fieldtype": "Float",
+   "label": "9.9"
+  },
+  {
+   "fieldname": "rate_100",
+   "fieldtype": "Float",
+   "label": "10.0"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-20 15:56:09.502092",
+ "modified": "2024-11-21 15:49:01.144296",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Milk Rate Item",

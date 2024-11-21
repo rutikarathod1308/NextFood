@@ -58,73 +58,42 @@ frappe.ui.form.on('MILK Rate', {
       
 
         frm.fields_dict["fatsnf_rate"].grid.add_custom_button(__('Download'), function () {
-           
-            // Fetch child table data
             const childTableData = frm.doc.fatsnf_rate;
-
-            // Define the headers and field mapping
-           
-
-            
-
+        
             const columns = [
                 'S NO', 
-                'Fat', 
-                'SNF/CLR', 
-                '8', 
-                '8.1', 
-                '8.2', 
-                '8.3', 
-                '8.4', 
-                '8.5', 
-                '8.6', 
-                '8.7', 
-                '8.8', 
-                '8.9', 
-                '9', 
-                '9.1', 
-                '9.2'
+                'Fat',
+                'SNF/CLR',
+                '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', 
+                '6.0', '6.1', '6.2', '6.3', '6.4', '6.5', '6.6', '6.7', '6.8', '6.9', 
+                '7.0', '7.1', '7.2', '7.3', '7.4', '7.5', '7.6', '7.7', '7.8', '7.9', 
+                '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6', '8.7', '8.8', '8.9', 
+                '9.0', '9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.7', '9.8', '9.9', 
+                '10.0'
             ];
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-
-            // Add headers
-          
-            csvContent += columns.join(',') + '\n';
-
-            // Add data rows
-            csvContent += childTableData.map((d, index) => {
+        
+            let csvContent = columns.join(',') + '\n';
+        
+            // Map data to rows
+            csvContent += childTableData.map((row, index) => {
                 return [
-                    index + 1, // S NO
-                    (d.fat ? d.fat.toFixed(2) : 0),
-                    d.snfclr || '', 
-                    (d.rate_8 ? d.rate_8.toFixed(2) : 0),
-                    (d.rate_81 ? d.rate_81.toFixed(2) : 0),
-                    (d.rate_82 ? d.rate_82.toFixed(2) : 0),
-                    (d.rate_83 ? d.rate_83.toFixed(2) : 0),
-                    (d.rate_84 ? d.rate_84.toFixed(2) : 0),
-                    (d.rate_85 ? d.rate_85.toFixed(2) : 0),
-                    (d.rate_86? d.rate_86.toFixed(2) : 0),
-                    (d.rate_87 ? d.rate_87.toFixed(2) : 0),
-                    (d.rate_88 ? d.rate_88.toFixed(2) : 0),
-                    (d.rate_89 ? d.rate_89.toFixed(2) : 0),
-                    (d.rate_9 ? d.rate_9.toFixed(2) : 0),
-                    (d.rate_91 ? d.rate_91.toFixed(2) : 0),
-                    (d.rate_92 ? d.rate_92.toFixed(2) : 0),
-                    
+                    index + 1, 
+                    row.fat ? row.fat.toFixed(2) : '', 
+                    row.snfclr || '', // Example additional field
+                    ...columns.slice(3).map((col) => {
+                        const rateField = `rate_${col.replace('.', '')}`;
+                        return row[rateField] ? row[rateField].toFixed(2) : '';
+                    })
                 ].join(',');
             }).join('\n');
-            
-
-           
-
-            // Create a temporary anchor element to trigger the download
+        
             const anchor = document.createElement('a');
-            anchor.href = encodeURI(csvContent);
+            anchor.href = encodeURI(`data:text/csv;charset=utf-8,${csvContent}`);
             anchor.target = '_blank';
-            anchor.download = 'work_order.csv';
+            anchor.download = 'fatsnf_rate.csv';
             anchor.click();
         });
+        
 
         // Change button style to match the primary color
         frm.fields_dict["fatsnf_rate"].grid.grid_buttons.find('.btn-custom').removeClass('btn-default').addClass('btn-primary');

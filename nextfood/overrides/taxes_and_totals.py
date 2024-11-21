@@ -7,10 +7,10 @@ class custom_calculate_taxes_and_totals(calculate_taxes_and_totals):
     def custom_calculate_item_values(self):
         if self.doc.doctype == 'Purchase Receipt':
             for item in self.doc.items:
-                if item.item_group == "MILK":
+                if item.custom_fat_and_snf_based_rate:
                     if item.doctype in ["Purchase Receipt Item"]:
                             print("It's Corrected Way...:)")
-                            item.amount = flt((item.custom_basic_rate/6.5*60*item.custom_fat_kg) + (item.custom_basic_rate/8.5*40*item.custom_snf_kg))
+                            item.amount = flt((item.rate/6.5*60*item.custom_fat_kg) + (item.rate/8.5*40*item.custom_snf_kg))
                             
 
                             item.net_amount = item.amount
@@ -24,10 +24,10 @@ class custom_calculate_taxes_and_totals(calculate_taxes_and_totals):
 
         elif self.doc.doctype == 'Purchase Invoice':
             for item in self.doc.items:
-                if item.item_group == "MILK":
+                if item.custom_fat_and_snf_based_rate:
                     if item.doctype in ["Purchase Invoice Item"]:
                             print("It's Corrected Way...:)")
-                            item.amount = flt((item.custom_basic_rate/6.5*60*item.custom_fat_kg) + (item.custom_basic_rate/8.5*40*item.custom_snf_kg))
+                            item.amount = flt((item.rate/6.5*60*item.custom_fat_kg) + (item.rate/8.5*40*item.custom_snf_kg))
                             
 
                             item.net_amount = item.amount
