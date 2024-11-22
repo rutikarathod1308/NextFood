@@ -5,6 +5,7 @@ import time
 def update_fatkg_snfkg(doc, method):
     for item in doc.items:
         bin_details = frappe.get_all("Bin", filters={'item_code': item.item_code, 'warehouse': item.warehouse}, fields=['*'])
+        
         time.sleep(2)
         if bin_details:
             # Access the first matching Bin record

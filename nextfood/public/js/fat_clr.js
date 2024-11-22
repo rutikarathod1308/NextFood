@@ -1,7 +1,7 @@
 frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn) {
     
     var d = locals[cdt][cdn];
-    if(d.custom_fat_and_snf_based_rate || d.custom_sheet_based_rate){
+    if(frm.doc.custom_fat_and_snf_based_rate || frm.doc.custom_sheet_based_rate){
     var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + 0.14).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
 
@@ -66,7 +66,7 @@ function formatDate(date) {
 frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn) {
     
     var d = locals[cdt][cdn];
-    if(d.custom_fat_and_snf_based_rate || d.custom_sheet_based_rate){
+    if(frm.doc.custom_fat_and_snf_based_rate || frm.doc.custom_sheet_based_rate){
     var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + 0.14).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
 
@@ -124,7 +124,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn)
 })
 frappe.ui.form.on("Purchase Receipt Item", "rate", function(frm, cdt, cdn) {
     var d = locals[cdt][cdn];
-    if(d.custom_fat_and_snf_based_rate){
+    if(frm.doc.custom_fat_and_snf_based_rate ){
     var amt = (
         (d.rate / 6.5 * 60 * d.custom_fat_kg) + 
         (d.rate / 8.5 * 40 * d.custom_snf_kg)
@@ -134,20 +134,7 @@ frappe.ui.form.on("Purchase Receipt Item", "rate", function(frm, cdt, cdn) {
     
 })
 
-frappe.ui.form.on("Purchase Receipt Item", {
-    custom_fat_and_snf_based_rate: function(frm, cdt, cdn) {
-        let row = locals[cdt][cdn];
-        if (row.custom_fat_and_snf_based_rate) {
-            frappe.model.set_value(cdt, cdn, "custom_sheet_based_rate", 0);
-        }
-    },
-    custom_sheet_based_rate: function(frm, cdt, cdn) {
-        let row = locals[cdt][cdn];
-        if (row.custom_sheet_based_rate) {
-            frappe.model.set_value(cdt, cdn, "custom_fat_and_snf_based_rate", 0);
-        }
-    }
-});
+
 
 frappe.ui.form.on("Purchase Receipt", {
     custom_gate_entry: function(frm) {
