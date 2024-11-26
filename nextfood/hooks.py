@@ -155,8 +155,8 @@ doc_events = {
     },
     "Stock Entry":{
         "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg",
-        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_update_fatkg_snfkg",
-        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_material_fatkg_snfkg"
+        "on_cancel":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_cancel_fatkg_snfkg"
+        
     }
     
 }
