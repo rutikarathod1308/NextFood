@@ -39,9 +39,7 @@ def update_fatkg_snfkg(doc, method):
             
             frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {'custom_fat_kg': total_fat_kg_ledger, 'custom_snf_kg': total_snf_kg_ledger})
     
-        else:
-            # Display a message if no Bin record is found
-            frappe.msgprint(f"No bin found for item {item.item_code} in warehouse {item.warehouse}")
+       
             
 def after_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:
@@ -80,9 +78,7 @@ def after_cancel_fatkg_snfkg(doc, method):
            
             frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {'custom_fat_kg': total_fat_kg_ledger, 'custom_snf_kg': total_snf_kg_ledger})
     
-        else:
-            # Display a message if no Bin record is found
-            frappe.msgprint(f"No bin found for item {item.item_code} in warehouse {item.warehouse}")
+        
             
 def after_stock_minus_fatkg_snfkg(doc, method):
         for item in doc.items:
@@ -120,10 +116,26 @@ def after_stock_minus_fatkg_snfkg(doc, method):
                     total_fat_kg_ledger = ledger_fat_kg - ledger_item_fat_kg
                     total_snf_kg_ledger = ledger_snf_kg - ledger_item_snf_kg
                     frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {'custom_fat_kg': total_fat_kg_ledger, 'custom_snf_kg': total_snf_kg_ledger})
-            else:
-                # Display a message if no Bin record is found
-                frappe.msgprint(f"No bin found for item {item.item_code} in warehouse {item.s_warehouse}")
-                
+            
+def delivery_item_update(doc, method):
+    if doc.stock_entry_type == "Crates Return":
+        for item in doc.items:
+            frappe.db.set_value(
+                "Delivery Note Item", 
+                {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
+                "custom_is_return", 
+                1  # Assuming you want to set this field to 1 (True)
+            )
+def delivery_item_cancel(doc, method):
+    if doc.stock_entry_type == "Crates Return":
+        for item in doc.items:
+            frappe.db.set_value(
+                "Delivery Note Item", 
+                {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
+                "custom_is_return", 
+                0  # Assuming you want to set this field to 1 (True)
+            )
+                       
 def after_stock_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:
         if item.s_warehouse :
@@ -152,9 +164,7 @@ def after_stock_cancel_fatkg_snfkg(doc, method):
                 
                 
     
-        else:
-            # Display a message if no Bin record is found
-            frappe.msgprint(f"No bin found for item {item.item_code} in warehouse {item.warehouse}")
+        
 # def after_stock_update_fatkg_snfkg(doc, method):
     
 #     for item in doc.items:

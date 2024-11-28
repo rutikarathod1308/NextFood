@@ -50,7 +50,8 @@ doctype_js = {
               "Purchase Invoice" : "public/js/purchase_invoice.js",
               "Quality Inspection":"public/js/quality.js",
               "Stock Entry" : "public/js/snf_calculation.js",
-              "Supplier" : "public/js/supplier.js"}
+              "Supplier" : "public/js/supplier.js",
+              "Delivery Note":"public/js/delivery_note.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -154,8 +155,12 @@ doc_events = {
 
     },
     "Stock Entry":{
-        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg",
-        "on_cancel":"nextfood.public.py.purchase_receipt_snf_fat.after_stock_cancel_fatkg_snfkg"
+        "on_submit":[
+            "nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg",
+            "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_update"],
+        "on_cancel":[
+                     "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_cancel"
+                     ]
         
     }
     

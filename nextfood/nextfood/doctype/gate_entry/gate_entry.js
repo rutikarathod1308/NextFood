@@ -21,7 +21,7 @@ frappe.ui.form.on("Gate Entry", {
 			});
 		}
 		if(frm.doc.inspection_required){
-			if (cur_frm.doc.docstatus == 0 && cur_frm.doc.entry_type == "Inward") {
+			if (cur_frm.doc.docstatus == 1 && cur_frm.doc.entry_type == "Inward") {
 				cur_frm.add_custom_button(
 					__("Quality Inspection"),
 					function() {

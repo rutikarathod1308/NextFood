@@ -20,6 +20,7 @@ frappe.ui.form.on("Stock Entry Detail", "custom_clr", function(frm, cdt, cdn) {
     
 })
 
+
 frappe.ui.form.on("Stock Entry Detail", "item_code", function(frm, cdt, cdn) {
     var d = locals[cdt][cdn];
     if(d.s_warehouse && frm.doc.stock_entry_type != "Material Transfer"){
