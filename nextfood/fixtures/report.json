@@ -86,7 +86,7 @@
   "timeout": 0
  },
  {
-  "add_total_row": 0,
+  "add_total_row": 1,
   "columns": [],
   "disabled": 0,
   "docstatus": 0,
@@ -121,11 +121,11 @@
   "javascript": null,
   "json": null,
   "letter_head": null,
-  "modified": "2024-12-03 13:52:31.595468",
+  "modified": "2024-12-03 18:07:14.236326",
   "module": "Nextfood",
   "name": "Customer wise Crates Report",
   "prepared_report": 0,
-  "query": "SELECT \n    dm.customer AS 'Customer Name',\n    dnt.item_code AS 'Item Code',\n    SUM(dnt.qty) AS 'Out Qty',\n    SUM(sed.qty) AS 'IN Qty'\nFROM \n    `tabDelivery Note` dm\nJOIN \n    `tabDelivery Note Item` dnt \nON \n    dm.name = dnt.parent\nJOIN \n    `tabStock Entry` se \nON \n    se.custom_delivery_note = dm.name\nJOIN \n    `tabStock Entry Detail` sed \nON \n    se.name = sed.parent\nWHERE \n    dnt.custom_is_companny_provided_item = 1\n   AND\n (\n       DATE(dm.posting_date) between %(from_date) s\n       and %(to_date) s\n   )\nGROUP BY \n    dm.customer, dnt.item_code;\n",
+  "query": "SELECT \n    dm.customer AS 'Customer Name',\n    dnt.item_code AS 'Item Code',\n    SUM(dnt.qty) AS 'Out Qty',\n    SUM(sed.qty) AS 'IN Qty',\n    dnt.actual_qty AS \"Balance Qty\"\nFROM \n    `tabDelivery Note` dm\nJOIN \n    `tabDelivery Note Item` dnt \nON \n    dm.name = dnt.parent\nJOIN \n    `tabStock Entry` se \nON \n    se.custom_delivery_note = dm.name\nJOIN \n    `tabStock Entry Detail` sed \nON \n    se.name = sed.parent\nWHERE \n    dnt.custom_is_companny_provided_item = 1\n   AND\n (\n       DATE(dm.posting_date) between %(from_date) s\n       and %(to_date) s\n   )\n   and \n   dnt.item_code = sed.item_code\nGROUP BY \n    dm.customer, dnt.item_code;\n",
   "ref_doctype": "Delivery Note",
   "reference_report": null,
   "report_name": "Customer wise Crates Report",
