@@ -84,5 +84,91 @@
    }
   ],
   "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": null,
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Customer wise Crates Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 1,
+    "options": null,
+    "parent": "Customer wise Crates Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2024-12-03 13:52:31.595468",
+  "module": "Nextfood",
+  "name": "Customer wise Crates Report",
+  "prepared_report": 0,
+  "query": "SELECT \n    dm.customer AS 'Customer Name',\n    dnt.item_code AS 'Item Code',\n    SUM(dnt.qty) AS 'Out Qty',\n    SUM(sed.qty) AS 'IN Qty'\nFROM \n    `tabDelivery Note` dm\nJOIN \n    `tabDelivery Note Item` dnt \nON \n    dm.name = dnt.parent\nJOIN \n    `tabStock Entry` se \nON \n    se.custom_delivery_note = dm.name\nJOIN \n    `tabStock Entry Detail` sed \nON \n    se.name = sed.parent\nWHERE \n    dnt.custom_is_companny_provided_item = 1\n   AND\n (\n       DATE(dm.posting_date) between %(from_date) s\n       and %(to_date) s\n   )\nGROUP BY \n    dm.customer, dnt.item_code;\n",
+  "ref_doctype": "Delivery Note",
+  "reference_report": null,
+  "report_name": "Customer wise Crates Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Delivery User"
+   },
+   {
+    "parent": "Customer wise Crates Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Delivery Manager"
+   }
+  ],
+  "timeout": 0
  }
 ]

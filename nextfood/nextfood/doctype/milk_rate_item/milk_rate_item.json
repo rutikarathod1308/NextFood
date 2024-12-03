@@ -150,18 +150,18 @@
   {
    "fieldname": "rate_50",
    "fieldtype": "Float",
-   "label": "5.0"
+   "label": "5"
   },
   {
    "fieldname": "rate_80",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "8.0"
+   "label": "8"
   },
   {
    "fieldname": "rate_90",
    "fieldtype": "Float",
-   "label": "9.0"
+   "label": "9"
   },
   {
    "fieldname": "rate_51",
@@ -211,7 +211,7 @@
   {
    "fieldname": "rate_60",
    "fieldtype": "Float",
-   "label": "6.0"
+   "label": "6"
   },
   {
    "fieldname": "rate_61",
@@ -261,7 +261,7 @@
   {
    "fieldname": "rate_70",
    "fieldtype": "Float",
-   "label": "7.0"
+   "label": "7"
   },
   {
    "fieldname": "rate_71",
@@ -346,13 +346,13 @@
   {
    "fieldname": "rate_100",
    "fieldtype": "Float",
-   "label": "10.0"
+   "label": "10"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-21 15:49:01.144296",
+ "modified": "2024-12-03 16:47:09.667373",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Milk Rate Item",
