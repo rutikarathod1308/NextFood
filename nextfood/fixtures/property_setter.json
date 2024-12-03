@@ -14,5 +14,21 @@
   "property_type": "Text",
   "row_name": null,
   "value": "\nPurchase Receipt\nPurchase Invoice\nSubcontracting Receipt\nDelivery Note\nSales Invoice\nStock Entry\nJob Card\nGate Entry"
+ },
+ {
+  "default_value": null,
+  "doc_type": "BOM Item",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocType",
+  "field_name": null,
+  "is_system_generated": 0,
+  "modified": "2024-12-03 11:45:59.517391",
+  "module": "Nextfood",
+  "name": "BOM Item-qty-allow_on_submit",
+  "property": "allow_on_submit",
+  "property_type": "Check",
+  "row_name": "qty",
+  "value": "1"
  }
 ]

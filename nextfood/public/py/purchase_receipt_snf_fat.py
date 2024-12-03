@@ -25,7 +25,7 @@ def update_fatkg_snfkg(doc, method):
         
 
             # Update the Bin record with new total values
-            frappe.db.set_value("Bin", bin_detail.name, {'fat_kg': total_fat_kg, 'snf_kg': total_snf_kg})
+            frappe.db.set_value("Bin", bin_detail.name, {'fat_kg': total_fat_kg, 'snf_kg': total_snf_kg,"custom_fat":item.custom_fat,"custom_snf":item.custom_snf})
         
         
             ledger_detail = ledger_details[0]
@@ -37,7 +37,7 @@ def update_fatkg_snfkg(doc, method):
             total_fat_kg_ledger = ledger_item_fat_kg
             total_snf_kg_ledger = ledger_item_snf_kg 
             
-            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {'custom_fat_kg': total_fat_kg_ledger, 'custom_snf_kg': total_snf_kg_ledger})
+            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {'custom_fat_kg': total_fat_kg_ledger, 'custom_snf_kg': total_snf_kg_ledger,"custom_fat":item.custom_fat,"custom_snf":item.custom_snf})
     
        
             
