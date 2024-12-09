@@ -13,6 +13,7 @@
   "party_type",
   "supplier",
   "outward_for",
+  "is_collect_driver_through",
   "column_break_om2y0",
   "gate_in_date",
   "inspection_required",
@@ -22,6 +23,7 @@
   "gate_out_date",
   "gate_out_time",
   "outward_entry",
+  "purchase_receipt",
   "section_break_qaj4p",
   "stock_item_tab",
   "section_break_s4rhw",
@@ -338,12 +340,25 @@
    "fieldname": "inspection_required",
    "fieldtype": "Check",
    "label": "Inspection Required"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_collect_driver_through",
+   "fieldtype": "Check",
+   "label": "Is Collect Driver Through"
+  },
+  {
+   "depends_on": "eval:doc.is_collect_driver_through",
+   "fieldname": "purchase_receipt",
+   "fieldtype": "Link",
+   "label": "Purchase Receipt",
+   "options": "Purchase Receipt"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-14 17:17:16.818785",
+ "modified": "2024-12-04 15:14:52.805593",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry",

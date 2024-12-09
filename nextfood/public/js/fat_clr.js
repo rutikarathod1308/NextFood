@@ -202,6 +202,62 @@ frappe.ui.form.on("Purchase Receipt", {
     },
     
 });
+frappe.ui.form.on("Purchase Receipt", {
+    refresh: function (frm) {
+        if (frm.doc.supplier && frm.doc.custom_milk_collect_driver_through) {
+            // Fetch Supplier Details
+            frappe.call({
+                method: "frappe.client.get",
+                args: {
+                    doctype: "Supplier",
+                    filters: {
+                        name: frm.doc.supplier
+                    }
+                },
+                callback: function (r) {
+                    if (r.message && r.message.supplier_group) {
+                        console.log("Supplier Group:", r.message.supplier_group);
+                        frm.set_query("set_warehouse", function () {
+                            return {
+                                filters: {
+                                    custom_supplier_group: r.message.supplier_group
+                                }
+                            };
+                        });
+                    }
+                }
+            });
+        }  
+    }
+});
+frappe.ui.form.on("Purchase Receipt", {
+    custom_milk_collect_driver_through: function (frm) {
+if (frm.doc.set_warehouse && frm.doc.custom_milk_collect_driver_through) {
+    // Fetch Warehouse Details
+    frappe.call({
+        method: "frappe.client.get",
+        args: {
+            doctype: "Warehouse",
+            filters: {
+                name: frm.doc.set_warehouse
+            }
+        },
+        callback: function (r) {
+            if (r.message && r.message.custom_supplier_group) {
+                console.log("Custom Supplier Group from Warehouse:", r.message.custom_supplier_group);
+                frm.set_query("supplier", function () {
+                    return {
+                        filters: {
+                            supplier_group: r.message.custom_supplier_group
+                        }
+                    };
+                });
+            }
+        }
+    });
+}
+    }
+})
 
 // frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn) {
 //     var item = locals[cdt][cdn];
