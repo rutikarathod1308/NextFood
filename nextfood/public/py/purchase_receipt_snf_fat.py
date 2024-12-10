@@ -120,21 +120,36 @@ def after_stock_minus_fatkg_snfkg(doc, method):
 def delivery_item_update(doc, method):
     if doc.stock_entry_type == "Crates Return":
         for item in doc.items:
-            frappe.db.set_value(
-                "Delivery Note Item", 
-                {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
-                "custom_is_return", 
-                1  # Assuming you want to set this field to 1 (True)
+            if doc.custom_delivery_note:
+                frappe.db.set_value(
+                    "Delivery Note Item", 
+                    {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
+                    {"custom_is_return":1,"custom_return_qty":item.qty + item.custom_delivery_bal_qty } # Assuming you want to set this field to 1 (True)
+                )
+            elif doc.custom_sales_invoice:
+                frappe.db.set_value(
+                "Sales Invoice Item", 
+                {"name": item.custom_delivery_note_item, "parent": doc.custom_sales_invoice}, 
+                {"custom_is_return":1,"custom_return_qty":item.qty + item.custom_delivery_bal_qty } # Assuming you want to set this field to 1 (True)
             )
+
+            
 def delivery_item_cancel(doc, method):
     if doc.stock_entry_type == "Crates Return":
         for item in doc.items:
-            frappe.db.set_value(
-                "Delivery Note Item", 
-                {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
-                "custom_is_return", 
-                0  # Assuming you want to set this field to 1 (True)
-            )
+            if doc.custom_delivery_note:
+                frappe.db.set_value(
+                    "Delivery Note Item", 
+                    {"name": item.custom_delivery_note_item, "parent": doc.custom_delivery_note}, 
+                    {"custom_is_return":0,"custom_return_qty":item.qty + item.custom_delivery_bal_qty - item.qty} # Assuming you want to set this field to 1 (True)
+                )
+            elif doc.custom_sales_invoice:
+                frappe.db.set_value(
+                    "Sales Invoice Item", 
+                    {"name": item.custom_delivery_note_item, "parent": doc.custom_sales_invoice}, 
+                   {"custom_is_return":0,"custom_return_qty":item.qty + item.custom_delivery_bal_qty - item.qty}  # Assuming you want to set this field to 1 (True)
+                )
+                
                        
 def after_stock_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:

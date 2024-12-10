@@ -94,7 +94,7 @@ frappe.ui.form.on("Gate Entry", {
 });
 
 frappe.ui.form.on("Gate Entry",{
-	refresh:function(frm){
+	refresh:function(frm){ 
 		frm.set_query("purchase_receipt", function() {
 			return {
 				filters: {
