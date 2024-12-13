@@ -12,7 +12,7 @@ class custom_calculate_taxes_and_totals(calculate_taxes_and_totals):
                             print("It's Corrected Way...:)")
                             item.amount = flt((item.rate/6.5*60*item.custom_fat_kg) + (item.rate/8.5*40*item.custom_snf_kg))
                             
-
+                            
                             item.net_amount = item.amount
 
                             self._set_in_company_currency(
@@ -103,7 +103,7 @@ class custom_calculate_taxes_and_totals(calculate_taxes_and_totals):
                     item.amount = flt(item.rate, item.precision("amount"))
                 else:
                     item.amount = flt(item.rate * item.qty, item.precision("amount"))
-
+            
                 item.net_amount = item.amount
 
                 self._set_in_company_currency(

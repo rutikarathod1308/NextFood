@@ -89,3 +89,33 @@ frappe.ui.form.on("Stock Entry", {
 
 
 
+frappe.ui.form.on("Stock Entry", {
+    after_save: function(frm) {
+        $.each(frm.doc.items || [], function(i,d){
+            if(d.reference_purchase_receipt){
+                frappe.call({
+                    method: "frappe.client.get",
+                    args: {
+                        doctype: "Purchase Receipt",
+                        name: d.reference_purchase_receipt 
+                        },
+                        callback: function(response) {
+                            var items = response.message.items
+                            $.each(items, function(i, item) {
+                                if(item.item_code == d.item_code){
+                                    d.custom_purchase_fat = item.custom_fat;
+                                    d.custom_purchase_clr = item.custom_clr;
+                                    d.custom_purchase_snf = item.custom_snf;
+                                    d.custom_purchase_snf_kg = item.custom_snf_kg;
+                                    d.custom_purchase_fat_kg = item.custom_fat_kg;
+
+                                }
+                            })
+                        }
+                                
+                     
+                        });
+            }
+        })
+    }
+})

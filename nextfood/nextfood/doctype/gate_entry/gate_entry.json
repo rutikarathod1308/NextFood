@@ -10,6 +10,7 @@
   "naming_series",
   "entry_type",
   "purpose",
+  "driver",
   "party_type",
   "supplier",
   "outward_for",
@@ -24,6 +25,7 @@
   "gate_out_time",
   "outward_entry",
   "purchase_receipt",
+  "stock_entry",
   "section_break_qaj4p",
   "stock_item_tab",
   "section_break_s4rhw",
@@ -54,7 +56,8 @@
   "weight_out_date",
   "weight_out_time",
   "transporter_name",
-  "company"
+  "company",
+  "connection_tab"
  ],
  "fields": [
   {
@@ -70,7 +73,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Entry Type",
-   "options": "\nInward\nOutward\nOthers"
+   "options": "\nInward\nOutward\nDriver Through Milk Inward\nOthers"
   },
   {
    "fieldname": "purpose",
@@ -168,7 +171,6 @@
    "label": "Driver Name"
   },
   {
-   "default": "+91-",
    "fieldname": "driver_mobile_no",
    "fieldtype": "Phone",
    "label": "Driver Mobile No."
@@ -353,12 +355,43 @@
    "fieldtype": "Link",
    "label": "Purchase Receipt",
    "options": "Purchase Receipt"
+  },
+  {
+   "depends_on": "eval:doc.entry_type == \"Driver Through Milk Inward\"",
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
+  },
+  {
+   "depends_on": "eval:doc.entry_type == \"Driver Through Milk Inward\"",
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry"
+  },
+  {
+   "fieldname": "connection_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connection",
+   "show_dashboard": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2024-12-04 15:14:52.805593",
+ "links": [
+  {
+   "group": "Quality Inspection",
+   "link_doctype": "Quality Inspection",
+   "link_fieldname": "reference_name"
+  },
+  {
+   "group": "Stock Entry",
+   "link_doctype": "Stock Entry",
+   "link_fieldname": "custom_gate_entry"
+  }
+ ],
+ "modified": "2024-12-13 16:09:21.536174",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry",

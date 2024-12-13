@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"ji9kPYX426\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Gate Pass</span>\",\"col\":12}},{\"id\":\"pYxIqBVuoB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Out\",\"col\":3}},{\"id\":\"SeyqYg7HUY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate In\",\"col\":3}},{\"id\":\"Ofv4YjsKoG\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"8-PqfqW6L9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Milk Rate\",\"col\":3}}]",
+  "content": "[{\"id\":\"ji9kPYX426\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Gate Pass</span>\",\"col\":12}},{\"id\":\"pYxIqBVuoB\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Out\",\"col\":3}},{\"id\":\"SeyqYg7HUY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate In\",\"col\":3}},{\"id\":\"Ofv4YjsKoG\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -12,7 +12,7 @@
   "is_hidden": 0,
   "label": "Gate Pass",
   "links": [],
-  "modified": "2024-12-04 09:45:34.264562",
+  "modified": "2024-12-13 16:06:53.170033",
   "module": "Nextfood",
   "name": "Gate Pass",
   "number_cards": [],
@@ -35,23 +35,7 @@
     "parentfield": "shortcuts",
     "parenttype": "Workspace",
     "restrict_to_domain": null,
-    "stats_filter": "[[\"Gate Entry\",\"entry_type\",\"=\",\"Inward\",false]]",
-    "type": "DocType",
-    "url": null
-   },
-   {
-    "color": "Grey",
-    "doc_view": "List",
-    "format": null,
-    "icon": null,
-    "kanban_board": null,
-    "label": "Milk Rate",
-    "link_to": "MILK Rate",
-    "parent": "Gate Pass",
-    "parentfield": "shortcuts",
-    "parenttype": "Workspace",
-    "restrict_to_domain": null,
-    "stats_filter": "[]",
+    "stats_filter": "[[\"Gate Entry\",\"entry_type\",\"in\",[\"Inward\",\"Driver Through Milk Inward\",null],false]]",
     "type": "DocType",
     "url": null
    },

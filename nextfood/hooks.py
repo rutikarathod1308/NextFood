@@ -158,8 +158,8 @@ doc_events = {
     },
     "Stock Entry":{
         "on_submit":[
-            "nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg",
-            "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_update"],
+            "nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg"
+            ],
         "on_cancel":[
                      "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_cancel"
                      ]

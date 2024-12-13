@@ -14,7 +14,10 @@
   "inspection_type",
   "column_break_auzm",
   "fat",
-  "clr"
+  "clr",
+  "cane_qty",
+  "snf",
+  "warehouse"
  ],
  "fields": [
   {
@@ -72,12 +75,32 @@
    "fieldname": "fat",
    "fieldtype": "Float",
    "label": "Fat %"
+  },
+  {
+   "fieldname": "cane_qty",
+   "fieldtype": "Float",
+   "label": "Cane Qty"
+  },
+  {
+   "fetch_from": "item_code.custom_snf",
+   "fetch_if_empty": 1,
+   "fieldname": "snf",
+   "fieldtype": "Float",
+   "label": "Snf",
+   "precision": "5"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-14 16:31:25.479883",
+ "modified": "2024-12-13 13:05:39.444647",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry Item",
