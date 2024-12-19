@@ -119,3 +119,162 @@ frappe.ui.form.on("Stock Entry", {
         })
     }
 })
+
+frappe.ui.form.on("Stock Entry",{
+    stock_entry_type:function(frm){
+        if(frm.is_new() && frm.doc.stock_entry_type == "Material Transfer"){
+            frappe.call({
+                "method":"frappe.client.get",
+                args:{
+                    "doctype":"Employee",
+                    "filters":{
+                        'user_id':frappe.session.user,
+                    }
+    
+                },
+                callback:function(r){
+                    frappe.call({
+                        "method":"frappe.client.get",
+                        args:{
+                            "doctype":"Driver",
+                            filters:{
+                                "employee":r.message.name
+                            }
+                        },
+                        callback:function(res){
+                            frm.set_value("driver",res.message.name)
+                        }
+                    })
+                    
+                }
+            })
+        }
+    }
+})
+frappe.ui.form.on("Stock Entry", {
+    refresh: function(frm) {
+        // Add a custom button under "Get Items From"
+        frm.add_custom_button(__('Purchase Receipt'), function() {
+            // Open MultiSelectDialog
+            var d = new frappe.ui.form.MultiSelectDialog({
+                doctype: "Purchase Receipt",
+                target: frm,
+                setters: {
+                    status: "To Bill",      // Default status
+                    driver: frm.doc.driver // Pre-fill driver from the current form
+                },
+                add_filters_group: 1,      // Allow filters group
+                columns: ["name", "supplier", "posting_date"], // Columns to display in the dialog
+
+                // Action to handle selected records
+                action(selections) {
+                    console.log("Selected Purchase Receipt:", selections);
+
+                    // Hide the dialog
+                    d.dialog.hide();
+
+                    // Fetch data from selected Purchase Receipts
+                    var selected_name = selections.length
+                    let all_items = []; // Array to store all fetched items from all calls
+
+// Loop through each selection and fetch data
+let promises = selections.map(pr => {
+    return new Promise((resolve, reject) => {
+        frappe.call({
+            method: "frappe.client.get",
+            args: {
+                doctype: "Purchase Receipt",
+                name: pr // Fetch a single Purchase Receipt
+            },
+            callback: function(response) {
+                if (response.message && response.message.items) {
+                    resolve(response.message.items);
+                } else {
+                    resolve([]); // Resolve with empty array if no items found
+                }
+            },
+            error: reject
+        });
+    });
+});
+
+// Wait for all calls to complete
+Promise.all(promises).then(results => {
+    // Combine all fetched items into a single array
+    results.forEach(items => {
+        all_items = all_items.concat(items);
+    });
+
+    // Group items by item_code and custom_bm_or_cw
+    let grouped_items = {};
+    all_items.forEach(item => {
+        let key = `${item.item_code}_${item.custom_bm_or_cw || ''}`; // Unique key for grouping
+        
+        if (!grouped_items[key]) {
+            grouped_items[key] = {
+                item_code: item.item_code,
+                custom_bm_or_cw: item.custom_bm_or_cw,
+                transfer_qty : item.stock_qty,
+                qty: 0,
+                conversion_factor:item.conversion_factor,
+                s_warehouse:item.warehouse,
+                custom_cane_qty : 0,
+                custom_fat_kg : 0,
+                custom_snf_kg : 0,
+                
+            };
+        }
+
+        grouped_items[key].qty += parseFloat(item.qty) || 0;
+        grouped_items[key].custom_cane_qty += parseFloat(item.custom_cane_qty) || 0;
+        grouped_items[key].custom_fat_kg += parseFloat(item.custom_fat_kg) || 0;
+        grouped_items[key].custom_snf_kg += parseFloat(item.custom_snf_kg) || 0;
+    });
+
+    console.log("Grouped Items:", grouped_items);
+
+    // Clear the child table before adding new items
+    frm.clear_table("items");
+
+    // Add grouped items to the child table
+    Object.values(grouped_items).forEach(item => {
+        frm.add_child("items", {
+            item_code: item.item_code,
+            custom_bm_or_cw: item.custom_bm_or_cw,
+            qty: item.qty,
+            transfer_qty:item.transfer_qty,
+            conversion_factor:item.conversion_factor,
+            s_warehouse:item.s_warehouse,
+            custom_fat_kg: item.custom_fat_kg,
+            custom_snf_kg: item.custom_snf_kg,
+            custom_cane_qty: item.custom_cane_qty,
+        });
+    });
+
+    // Refresh the child table to display rows
+    frm.refresh_field("items");
+
+    frappe.msgprint({
+        title: __('Success'),
+        message: __('Grouped items have been added to the child table.'),
+        indicator: 'green'
+    });
+}).catch(error => {
+    frappe.msgprint({
+        title: __('Error'),
+        message: __('Failed to fetch items. Please try again.'),
+        indicator: 'red'
+    });
+    console.error("Error fetching items:", error);
+});
+
+                    
+                    
+                }
+            });
+        }, __("Get Items From")); // Group the button under "Get Items From"
+    }
+});
+
+
+

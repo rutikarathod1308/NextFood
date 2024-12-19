@@ -1,26 +1,17 @@
 frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn) {
     
     var d = locals[cdt][cdn];
-    if(frm.doc.custom_fat_and_snf_based_rate || frm.doc.custom_sheet_based_rate){
-        frappe.call({
-            method:"frappe.client.get",
-            args:{
-                doctype:"Item",
-                filters:{
-                    "name":d.item_code
-                }
-            },
-            callback:function(r){
-                console.log(r.message.custom_snf)
-                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + r.message.custom_snf).toFixed(2);
+
+        
+                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + frm.doc.custom_snf).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
     var b = (d.qty * a / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf_kg", b);
 
     var c = (d.qty * d.custom_fat / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_fat_kg", c);
-            }
-        })
+            
+        
 
     frappe.call({
         method: "nextfood.public.py.milk_rate_value.get_milk_data",
@@ -36,7 +27,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn)
                     var to_date = new Date(r.milk_data[i].to_date);
     
                     // Check if posting_date is within from_date and to_date
-                    if (posting_date >= from_date && posting_date <= to_date) {
+                    if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw ) {
                         // Convert dates to DD-MM-YYYY format
                         var formatted_from_date = formatDate(from_date);
                         var formatted_to_date = formatDate(to_date);
@@ -63,7 +54,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn)
         }
     });
 
-}
+
 
 })
 
@@ -132,26 +123,17 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn)
     
     var d = locals[cdt][cdn];
     
-    if(frm.doc.custom_fat_and_snf_based_rate || frm.doc.custom_sheet_based_rate){
-        frappe.call({
-            method:"frappe.client.get",
-            args:{
-                doctype:"Item",
-                filters:{
-                    "name":d.item_code
-                }
-            },
-            callback:function(r){
-                console.log(r.message.custom_snf)
-                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + r.message.custom_snf).toFixed(2);
+   
+       
+                
+                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + frm.doc.custom_snf).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
     var b = (d.qty * a / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf_kg", b);
 
     var c = (d.qty * d.custom_fat / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_fat_kg", c);
-            }
-        })
+           
     
 
  
@@ -200,7 +182,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn)
     });
 }
     
-}
+
 
     
     
@@ -270,6 +252,40 @@ frappe.ui.form.on("Purchase Receipt", {
             }
         }
         })
+        if (frm.is_new()) {
+            frappe.call({
+                method: "frappe.client.get_list",
+                args: {
+                    doctype: "Employee",
+                    fields: ["name", "employee_name", "user_id"], // Specify the fields you need
+                    limit_page_length: 100, // Optional: limit the number of records
+                },
+                callback: function (r) {
+                    if (r.message) {
+                        for(var i = 0 ; i < r.message.length ; i++){
+                            if(r.message[i].user_id == frappe.session.user){
+                                frappe.call({
+                                    "method":"frappe.client.get",
+                                    args:{
+                                        "doctype":"Driver",
+                                        filters:{
+                                            "employee":r.message.name
+                                        }
+                                    },
+                                    callback:function(res){
+                                        frm.set_value("driver",res.message.name)
+                                    }
+                                })
+                            }
+                        }
+                         // Logs the list of employees
+                    } else {
+                        frappe.msgprint("No Employees found.");
+                    }
+                },
+            });
+        }
+        
        
     },
     supplier:function(frm){
@@ -343,43 +359,3 @@ if (frm.doc.set_warehouse && frm.doc.custom_milk_collect_driver_through) {
     }
 })
 
-// frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn) {
-//     var item = locals[cdt][cdn];
-    
-//     if (item.item_group == "MILK") {
-        
-//         console.log("Hello");
-        
-//         let d = new frappe.ui.Dialog({
-//             title: 'Enter details',
-//             fields: [
-               
-               
-//                 {
-//                     label: 'Fat',
-//                     fieldname: 'fat',
-//                     fieldtype: 'Float'
-//                 },
-//                 {
-//                     label: 'CLR',
-//                     fieldname: 'clr',
-//                     fieldtype: 'Float'
-//                 },
-               
-//             ],
-//             size: 'small',
-//             primary_action_label: 'Submit',
-//             primary_action(values) {
-//                 console.log(values);
-               
-//                 frappe.model.set_value(cdt, cdn, "custom_fat", values.fat);
-               
-//                 frappe.model.set_value(cdt, cdn, "custom_clr", values.clr);
-                
-//                 d.hide();
-//             }
-//         });
-        
-//         d.show();
-//     }
-// });

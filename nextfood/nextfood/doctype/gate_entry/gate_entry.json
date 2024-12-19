@@ -15,6 +15,7 @@
   "supplier",
   "outward_for",
   "is_collect_driver_through",
+  "purchase_receipt_reference",
   "column_break_om2y0",
   "gate_in_date",
   "inspection_required",
@@ -28,6 +29,10 @@
   "stock_entry",
   "section_break_qaj4p",
   "stock_item_tab",
+  "section_break_tphr",
+  "total_qty",
+  "column_break_szqa",
+  "cane_qty",
   "section_break_s4rhw",
   "driver_name",
   "driver_mobile_no",
@@ -73,7 +78,7 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Entry Type",
-   "options": "\nInward\nOutward\nDriver Through Milk Inward\nOthers"
+   "options": "\nInward\nOutward\nDriver Through Milk Inward\nChilling Center\nOthers"
   },
   {
    "fieldname": "purpose",
@@ -155,10 +160,12 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_bulk_edit": 1,
    "fieldname": "stock_item_tab",
    "fieldtype": "Table",
    "label": "Stock Item",
-   "options": "Gate Entry Item"
+   "options": "Gate Entry Item",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_s4rhw",
@@ -347,17 +354,19 @@
    "default": "0",
    "fieldname": "is_collect_driver_through",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Is Collect Driver Through"
   },
   {
    "depends_on": "eval:doc.is_collect_driver_through",
    "fieldname": "purchase_receipt",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Purchase Receipt",
    "options": "Purchase Receipt"
   },
   {
-   "depends_on": "eval:doc.entry_type == \"Driver Through Milk Inward\"",
+   "depends_on": "eval:doc.entry_type == \"Driver Through Milk Inward\" || doc.entry_type == \"Chilling Center\"",
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
@@ -367,6 +376,7 @@
    "depends_on": "eval:doc.entry_type == \"Driver Through Milk Inward\"",
    "fieldname": "stock_entry",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Stock Entry",
    "options": "Stock Entry"
   },
@@ -375,6 +385,32 @@
    "fieldtype": "Tab Break",
    "label": "Connection",
    "show_dashboard": 1
+  },
+  {
+   "fieldname": "section_break_tphr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_szqa",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cane_qty",
+   "fieldtype": "Float",
+   "label": "Cane Qty",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_receipt_reference",
+   "fieldtype": "Small Text",
+   "label": "Purchase Receipt Reference"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -391,7 +427,7 @@
    "link_fieldname": "custom_gate_entry"
   }
  ],
- "modified": "2024-12-13 16:09:21.536174",
+ "modified": "2024-12-19 13:40:11.090693",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry",
@@ -399,6 +435,7 @@
  "owner": "Administrator",
  "permissions": [
   {
+   "cancel": 1,
    "create": 1,
    "delete": 1,
    "email": 1,

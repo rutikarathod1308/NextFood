@@ -42,10 +42,31 @@ def make_quality_inspections(doctype, docname, items):
 				"batch_no": item.get("batch_no"),
 				"custom_gate_item_name":item.get("name"),
 				"custom_fat":item.get("fat"),
-				"custom_clr":item.get("clr")
+				"custom_clr":item.get("clr"),
+				"custom_bm_or_cm":item.get("bm_or_cw"),
 			}
 		).insert()
 		quality_inspection.save()
 		inspections.append(quality_inspection.name)
 
 	return inspections
+
+def update_purchase_receipt(doc, method):
+    if doc.purchase_receipt_reference:
+        # Split the purchase receipt reference into a list, assuming references are separated by commas
+        purchase_receipt_numbers = [pr.strip() for pr in doc.purchase_receipt_reference.split(',') if pr.strip()]
+        
+        # Loop through each purchase receipt number
+        for pr_number in purchase_receipt_numbers:
+            # Update the Gate In field (assuming 'gate_in' is a checkbox field in Purchase Receipt doctype)
+            frappe.db.set_value("Purchase Receipt", pr_number, "custom_gate_in", "Yes")
+            # Display a message for each updated record
+            frappe.msgprint(f"Gate In field updated for Purchase Receipt: {pr_number}")
+
+            # Remove any leading/trailing whitespace
+            # if pr_number:
+            #     # Update the Gate In field for the Purchase Receipt
+            #     frappe.db.set_value("Purchase Receipt", pr_number, "custom_gate_in", 1)
+            #     frappe.msgprint(f"Gate In field updated for Purchase Receipt: {pr_number}")
+
+            

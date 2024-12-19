@@ -43,6 +43,7 @@ def update_fatkg_snfkg(doc, method):
             
 def after_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:
+        time.sleep(1)
         bin_details = frappe.get_all("Bin", filters={'item_code': item.item_code, 'warehouse': item.warehouse}, fields=['*'])
         ledger_details = frappe.get_all("Stock Ledger Entry", filters={'item_code': item.item_code, 'warehouse': item.warehouse,'voucher_no':doc.name}, fields=['*'])
         

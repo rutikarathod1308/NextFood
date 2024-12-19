@@ -164,6 +164,12 @@ doc_events = {
                      "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_cancel"
                      ]
         
+    },
+    "Gate Entry":{
+        "on_submit":[
+            "nextfood.nextfood.doctype.gate_entry.gate_entry.update_purchase_receipt"
+           
+        ]
     }
     
 }

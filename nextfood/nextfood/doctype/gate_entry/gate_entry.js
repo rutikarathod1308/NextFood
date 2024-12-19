@@ -3,6 +3,283 @@
 
 frappe.ui.form.on("Gate Entry", {
 	refresh(frm) {
+		
+		frm.add_custom_button(__('Purchase Receipt'), function() {
+            // Open MultiSelectDialog
+			if(frm.doc.entry_type == "Driver Through Milk Inward"){
+            var d = new frappe.ui.form.MultiSelectDialog({
+                doctype: "Purchase Receipt",
+                target: frm,
+                setters: {
+                    status: "To Bill",      // Default status
+                    driver: frm.doc.driver,
+					custom_purpose:"Driver Though Milk Inward",
+					custom_gate_in : "No"
+					 // Pre-fill driver from the current form
+                },
+				
+                 // Columns to display in the dialog
+
+                // Action to handle selected records
+                action(selections) {
+                   
+					var purchase_receipt_names = []; // Initialize an empty array
+					for (var i = 0; i < selections.length; i++) {
+						purchase_receipt_names.push(selections[i]); // Push each name into the array
+					}
+					var purchase_receipt_name = purchase_receipt_names.join(", "); // Join array elements with a comma and space
+				
+					frm.set_value("purchase_receipt_reference",purchase_receipt_name)
+                    // Hide the dialog
+                    d.dialog.hide();
+
+                    // Fetch data from selected Purchase Receipts
+                    var selected_name = selections.length
+					
+                    let all_items = []; // Array to store all fetched items from all calls
+
+// Loop through each selection and fetch data
+let promises = selections.map(pr => {
+    return new Promise((resolve, reject) => {
+        frappe.call({
+            method: "frappe.client.get",
+            args: {
+                doctype: "Purchase Receipt",
+                name: pr // Fetch a single Purchase Receipt
+            },
+            callback: function(response) {
+                if (response.message && response.message.items) {
+                    resolve(response.message.items);
+                } else {
+                    resolve([]); // Resolve with empty array if no items found
+                }
+            },
+            error: reject
+        });
+    });
+});
+
+// Wait for all calls to complete
+Promise.all(promises).then(results => {
+    // Combine all fetched items into a single array
+    results.forEach(items => {
+        all_items = all_items.concat(items);
+    });
+
+    // Group items by item_code and custom_bm_or_cw
+    let grouped_items = {};
+    all_items.forEach(item => {
+        let key = `${item.item_code}_${item.custom_bm_or_cw || ''}`; // Unique key for grouping
+        
+        if (!grouped_items[key]) {
+            grouped_items[key] = {
+                item_code: item.item_code,
+				item_name : item.item_name,
+                custom_bm_or_cw: item.custom_bm_or_cw,
+                transfer_qty : item.stock_qty,
+				warehouse:item.warehouse,
+                qty: 0,
+				bm_or_cw : item.custom_bm_or_cw,
+				uom:item.uom,
+                conversion_factor:item.conversion_factor,
+                s_warehouse:item.warehouse,
+                custom_cane_qty : 0,
+                custom_fat_kg : 0,
+                custom_snf_kg : 0,
+                
+            };
+        }
+
+        grouped_items[key].qty += parseFloat(item.qty) || 0;
+        grouped_items[key].custom_cane_qty += parseFloat(item.custom_cane_qty) || 0;
+        grouped_items[key].custom_fat_kg += parseFloat(item.custom_fat_kg) || 0;
+        grouped_items[key].custom_snf_kg += parseFloat(item.custom_snf_kg) || 0;
+    });
+
+    
+
+    // Clear the child table before adding new items
+    frm.clear_table("stock_item_tab");
+
+    // Add grouped items to the child table
+    Object.values(grouped_items).forEach(item => {
+        frm.add_child("stock_item_tab", {
+            item_code: item.item_code,
+            custom_bm_or_cw: item.custom_bm_or_cw,
+            qty: item.qty,
+			item_name : item.item_name,
+			bm_or_cw : item.bm_or_cw,
+			warehouse:item.warehouse,
+            transfer_qty:item.transfer_qty,
+            conversion_factor:item.conversion_factor,
+            s_warehouse:item.s_warehouse,
+            custom_fat_kg: item.custom_fat_kg,
+            custom_snf_kg: item.custom_snf_kg,
+            cane_qty: item.custom_cane_qty,
+			uom:item.uom
+        });
+    });
+
+    // Refresh the child table to display rows
+    frm.refresh_field("stock_item_tab");
+
+    frappe.msgprint({
+        title: __('Success'),
+        message: __('Grouped items have been added to the child table.'),
+        indicator: 'green'
+    });
+}).catch(error => {
+    frappe.msgprint({
+        title: __('Error'),
+        message: __('Failed to fetch items. Please try again.'),
+        indicator: 'red'
+    });
+    console.error("Error fetching items:", error);
+});
+
+                    
+                    
+                }
+            });
+		}
+		if(frm.doc.entry_type == "Chilling Center"){
+            var d = new frappe.ui.form.MultiSelectDialog({
+                doctype: "Purchase Receipt",
+                target: frm,
+                setters: {
+                    status: "To Bill",      // Default status
+                    driver: frm.doc.driver,
+					custom_purpose:"Chilling Center",
+					custom_gate_in : "No"
+					 // Pre-fill driver from the current form
+                },
+				
+                 // Columns to display in the dialog
+
+                // Action to handle selected records
+                action(selections) {
+                   
+					var purchase_receipt_names = []; // Initialize an empty array
+					for (var i = 0; i < selections.length; i++) {
+						purchase_receipt_names.push(selections[i]); // Push each name into the array
+					}
+					var purchase_receipt_name = purchase_receipt_names.join(", "); // Join array elements with a comma and space
+				
+					frm.set_value("purchase_receipt_reference",purchase_receipt_name)
+                    // Hide the dialog
+                    d.dialog.hide();
+
+                    // Fetch data from selected Purchase Receipts
+                    var selected_name = selections.length
+					
+                    let all_items = []; // Array to store all fetched items from all calls
+
+// Loop through each selection and fetch data
+let promises = selections.map(pr => {
+    return new Promise((resolve, reject) => {
+        frappe.call({
+            method: "frappe.client.get",
+            args: {
+                doctype: "Purchase Receipt",
+                name: pr // Fetch a single Purchase Receipt
+            },
+            callback: function(response) {
+                if (response.message && response.message.items) {
+                    resolve(response.message.items);
+                } else {
+                    resolve([]); // Resolve with empty array if no items found
+                }
+            },
+            error: reject
+        });
+    });
+});
+
+// Wait for all calls to complete
+Promise.all(promises).then(results => {
+    // Combine all fetched items into a single array
+    results.forEach(items => {
+        all_items = all_items.concat(items);
+    });
+
+    // Group items by item_code and custom_bm_or_cw
+    let grouped_items = {};
+    all_items.forEach(item => {
+        let key = `${item.item_code}_${item.custom_bm_or_cw || ''}`; // Unique key for grouping
+        
+        if (!grouped_items[key]) {
+            grouped_items[key] = {
+                item_code: item.item_code,
+				item_name : item.item_name,
+                custom_bm_or_cw: item.custom_bm_or_cw,
+                transfer_qty : item.stock_qty,
+				warehouse:item.warehouse,
+                qty: 0,
+				bm_or_cw : item.custom_bm_or_cw,
+				uom:item.uom,
+                conversion_factor:item.conversion_factor,
+                s_warehouse:item.warehouse,
+                custom_cane_qty : 0,
+                custom_fat_kg : 0,
+                custom_snf_kg : 0,
+                
+            };
+        }
+
+        grouped_items[key].qty += parseFloat(item.qty) || 0;
+        grouped_items[key].custom_cane_qty += parseFloat(item.custom_cane_qty) || 0;
+        grouped_items[key].custom_fat_kg += parseFloat(item.custom_fat_kg) || 0;
+        grouped_items[key].custom_snf_kg += parseFloat(item.custom_snf_kg) || 0;
+    });
+
+    
+
+    // Clear the child table before adding new items
+    frm.clear_table("stock_item_tab");
+
+    // Add grouped items to the child table
+    Object.values(grouped_items).forEach(item => {
+        frm.add_child("stock_item_tab", {
+            item_code: item.item_code,
+            custom_bm_or_cw: item.custom_bm_or_cw,
+            qty: item.qty,
+			item_name : item.item_name,
+			bm_or_cw : item.bm_or_cw,
+			warehouse:item.warehouse,
+            transfer_qty:item.transfer_qty,
+            conversion_factor:item.conversion_factor,
+            s_warehouse:item.s_warehouse,
+            custom_fat_kg: item.custom_fat_kg,
+            custom_snf_kg: item.custom_snf_kg,
+            cane_qty: item.custom_cane_qty,
+			uom:item.uom
+        });
+    });
+
+    // Refresh the child table to display rows
+    frm.refresh_field("stock_item_tab");
+
+    frappe.msgprint({
+        title: __('Success'),
+        message: __('Grouped items have been added to the child table.'),
+        indicator: 'green'
+    });
+}).catch(error => {
+    frappe.msgprint({
+        title: __('Error'),
+        message: __('Failed to fetch items. Please try again.'),
+        indicator: 'red'
+    });
+    console.error("Error fetching items:", error);
+});
+
+                    
+                    
+                }
+            });
+		}
+}, __("Get Items From")); 
+
 		if (cur_frm.doc.entry_type == "Inward") {
 			
 			frm.set_query("party_type", function() {
@@ -58,7 +335,7 @@ frappe.ui.form.on("Gate Entry", {
 				__("Create")
 			);
 		}
-		if (frm.doc.stock_entry) {
+		
 			frm.add_custom_button(
 				__("Material Receipt"),
 				function () {
@@ -85,7 +362,8 @@ frappe.ui.form.on("Gate Entry", {
 									custom_snf_kg: (row.qty * (row.clr / 4 + 0.2 * row.fat + row.snf) / 100).toFixed(2),
 									custom_fat_kg: (row.qty * row.fat / 100).toFixed(2),
 									transfer_qty: row.qty,
-									conversion_factor: 1
+									conversion_factor: 1,
+									custom_bm_or_cw:row.bm_or_cw
 								}));
 		
 								// Add rows to the child table
@@ -115,7 +393,7 @@ frappe.ui.form.on("Gate Entry", {
 				},
 				__("Create")
 			);
-		}
+		
 		
 
 		
@@ -127,7 +405,7 @@ frappe.ui.form.on("Gate Entry", {
 	entry_type(frm) {
 		if (cur_frm.doc.entry_type == "Inward") {
 			frm.doc.stock_item_tab.forEach((row) => {
-				console.log(row.name)
+				
 				frappe.model.set_value(row.doctype, row.name, "inspection_type", "Incoming");
 			});
 			frm.set_query("party_type", function() {
@@ -177,6 +455,17 @@ frappe.ui.form.on("Gate Entry", {
 				frappe.model.set_value(row.doctype, row.name, "inspection_type", "Incoming");
 			});
 		}
+		var total_qty = 0;
+		var cane_qty = 0;
+		
+		$.each(frm.doc.stock_item_tab, function(i, d) {
+            total_qty += d.qty;
+			cane_qty += d.cane_qty;
+    });
+    frm.set_value("total_qty",total_qty);
+    frm.refresh_field("total_qty");
+	frm.set_value("cane_qty",cane_qty);
+    frm.refresh_field("cane_qty");
 	}
 
 });
@@ -239,6 +528,8 @@ frappe.ui.form.on("Gate Entry",{
 					row.fat = r.message.items[i].custom_fat;
 					row.clr = r.message.items[i].custom_clr;
 					row.warehouse = r.message.items[i].t_warehouse;
+					row.cane_qty = r.message.items[i].custom_cane_qty;
+					row.bm_or_cw = r.message.items[i].custom_bm_or_cw
 				}
 				frm.refresh_field("stock_item_tab");
 			}

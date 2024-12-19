@@ -17,7 +17,8 @@
   "clr",
   "cane_qty",
   "snf",
-  "warehouse"
+  "warehouse",
+  "bm_or_cw"
  ],
  "fields": [
   {
@@ -82,7 +83,6 @@
    "label": "Cane Qty"
   },
   {
-   "fetch_from": "item_code.custom_snf",
    "fetch_if_empty": 1,
    "fieldname": "snf",
    "fieldtype": "Float",
@@ -95,12 +95,18 @@
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "fieldname": "bm_or_cw",
+   "fieldtype": "Select",
+   "label": "BM Or CW",
+   "options": "\nCow Milk\nBuffalo Milk\nMix Milk"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-12-13 13:05:39.444647",
+ "modified": "2024-12-19 15:38:01.782143",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry Item",
