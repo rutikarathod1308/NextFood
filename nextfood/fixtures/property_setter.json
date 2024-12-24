@@ -23,7 +23,7 @@
   "doctype_or_field": "DocType",
   "field_name": null,
   "is_system_generated": 0,
-  "modified": "2024-12-03 11:45:59.517391",
+  "modified": "2024-12-24 13:08:23.175413",
   "module": "Nextfood",
   "name": "BOM Item-qty-allow_on_submit",
   "property": "allow_on_submit",

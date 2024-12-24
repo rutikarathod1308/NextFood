@@ -11,9 +11,10 @@ def update_bom_item(bom_no, item_code, field_to_update, value_to_set):
     :param field_to_update: The field in BOM Item to be updated.
     :param value_to_set: The value to set for the specified field.
     """
-    if not frappe.has_permission("BOM Item", "write"):
-        frappe.throw(_("You do not have permission to modify BOM Item records."))
-
+    
+    # if not frappe.has_permission("BOM Item", "write"):
+    #     frappe.throw(_("You do not have permission to modify BOM Item records."))
+        
     # Fetch BOM Item matching BOM and Item Code
     bom_item_name = frappe.db.get_value(
         "BOM Item",

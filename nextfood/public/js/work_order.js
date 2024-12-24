@@ -164,6 +164,7 @@ frappe.ui.form.on("Work Order", {
             // Call the server-side method to update BOM Item
             frappe.call({
                 method: "nextfood.public.py.update_bom_item.update_bom_item",
+                freeze: true,
                 args: {
                     bom_no: frm.doc.bom_no, // BOM No from Work Order
                     item_code: d.item_code, // Item Code from Required Items
