@@ -46,15 +46,16 @@ app_license = "mit"
 # doctype_js = {"Stock Entry" : "public/js/snf_calculation.js",
 #               "Purchase Receipt" : "public/js/fat_clr.js"}
 doctype_js = {
-              "Purchase Receipt" : "public/js/fat_clr.js",
-              "Purchase Invoice" : "public/js/purchase_invoice.js",
-              "Quality Inspection":"public/js/quality.js",
-              "Stock Entry" : "public/js/snf_calculation.js",
-              "Supplier" : "public/js/supplier.js",
-              "Delivery Note":"public/js/delivery_note.js",
-              "Sales Invoice":"public/js/sales_invoice.js",
-              "Work Order":"public/js/work_order.js",
-              "Journal Entry":"public/js/journal_entry.js"}
+            "Purchase Receipt" : "public/js/fat_clr.js",
+            "Purchase Invoice" : "public/js/purchase_invoice.js",
+            "Quality Inspection":"public/js/quality.js",
+            "Stock Entry" : "public/js/snf_calculation.js",
+            "Supplier" : "public/js/supplier.js",
+            "Delivery Note":"public/js/delivery_note.js",
+            "Sales Invoice":"public/js/sales_invoice.js",
+            "Work Order":"public/js/work_order.js",
+            "Journal Entry":"public/js/journal_entry.js",
+            "Additional Salary":"public/js/additional_salary.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}

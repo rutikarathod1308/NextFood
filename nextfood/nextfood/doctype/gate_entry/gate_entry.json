@@ -78,14 +78,16 @@
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Entry Type",
-   "options": "\nInward\nOutward\nDriver Through Milk Inward\nChilling Center\nOthers"
+   "options": "\nInward\nOutward\nDriver Through Milk Inward\nChilling Center\nOthers",
+   "reqd": 1
   },
   {
    "fieldname": "purpose",
    "fieldtype": "Select",
    "in_standard_filter": 1,
    "label": "Purpose",
-   "options": "\nRaw Milk Material\nPacking Material\nOther"
+   "options": "\nRaw Milk Material\nPacking Material\nOther",
+   "reqd": 1
   },
   {
    "depends_on": "eval:doc.entry_type == \"Inward\" || doc.entry_type == \"Outward\"",
@@ -141,6 +143,7 @@
    "default": "0",
    "fieldname": "is_gate_out",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Is Gate Out"
   },
   {
@@ -410,6 +413,7 @@
   {
    "fieldname": "purchase_receipt_reference",
    "fieldtype": "Small Text",
+   "hidden": 1,
    "label": "Purchase Receipt Reference"
   }
  ],
@@ -427,7 +431,7 @@
    "link_fieldname": "custom_gate_entry"
   }
  ],
- "modified": "2024-12-19 13:40:11.090693",
+ "modified": "2024-12-31 15:40:43.764788",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "Gate Entry",
