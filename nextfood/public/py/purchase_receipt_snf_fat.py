@@ -184,7 +184,16 @@ def delivery_item_cancel(doc, method):
                     {"name": item.custom_delivery_note_item, "parent": doc.custom_sales_invoice}, 
                    {"custom_is_return":0,"custom_return_qty":item.qty + item.custom_delivery_bal_qty - item.qty}  # Assuming you want to set this field to 1 (True)
                 )
-                
+    if doc.stock_entry_type == "Employee Purchase Item":
+        for item in doc.items:
+        # Update 'is_delivered' to 0 for the corresponding Employee Items row
+            frappe.db.set_value(
+                "Employee Items",
+                {"parent": doc.custom_refrence_name, "name": item.custom_additional_reference_name},
+                {"is_delivered":0,"stock_entry":""}
+            )
+
+                   
                        
 def after_stock_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:

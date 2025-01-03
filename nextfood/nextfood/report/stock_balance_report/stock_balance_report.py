@@ -198,12 +198,16 @@ class StockBalanceReport:
 		for field in self.inventory_dimensions:
 			qty_dict[field] = entry.get(field)
 
+		# Initialize the variables to avoid UnboundLocalError
+		in_fat_kg_diff = 0.0
+		in_snf_kg_diff = 0.0
+
 		if entry.voucher_type == "Stock Reconciliation" and (not entry.batch_no or entry.serial_no):
 			qty_diff = flt(entry.qty_after_transaction) - flt(qty_dict.bal_qty)
 		else:
 			qty_diff = flt(entry.actual_qty)
 			in_fat_kg_diff = flt(entry.custom_fat_kg) 
-			in_snf_kg_diff = flt(entry.custom_snf_kg) 
+			in_snf_kg_diff = flt(entry.custom_snf_kg)
 
 		value_diff = flt(entry.stock_value_difference)
 
@@ -211,25 +215,18 @@ class StockBalanceReport:
 			entry.voucher_type, []
 		):
 			qty_dict.opening_qty += qty_diff
-			
-
 		elif entry.posting_date >= self.from_date and entry.posting_date <= self.to_date:
 			if flt(qty_diff, self.float_precision) >= 0:
 				qty_dict.in_qty += qty_diff
 				qty_dict.in_fat_kg += in_fat_kg_diff
 				qty_dict.in_snf_kg += in_snf_kg_diff
-				
 			else:
 				qty_dict.out_qty += abs(qty_diff)
 				qty_dict.out_fat_kg += abs(in_fat_kg_diff)
 				qty_dict.out_snf_kg += abs(in_snf_kg_diff)
-    			
-				
 
-		
 		qty_dict.bal_qty += qty_diff
-		qty_dict.bal_snf_kg += in_snf_kg_diff
-		qty_dict.bal_fat_kg += in_fat_kg_diff
+		qty_dict
 		
 
 	def initialize_data(self, item_warehouse_map, group_by_key, entry):

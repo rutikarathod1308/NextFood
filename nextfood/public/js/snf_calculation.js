@@ -278,3 +278,8 @@ Promise.all(promises).then(results => {
 
 
 
+frappe.ui.form.on("Stock Entry",{
+    after_cancel:function(frm){
+        
+    }
+})
