@@ -52,6 +52,7 @@ doctype_js = {
             "Stock Entry" : "public/js/snf_calculation.js",
             "Supplier" : "public/js/supplier.js",
             "Delivery Note":"public/js/delivery_note.js",
+            "Sales Order":"public/js/sales_order.js",
             "Sales Invoice":"public/js/sales_invoice.js",
             "Work Order":"public/js/work_order.js",
             "Journal Entry":"public/js/journal_entry.js",
@@ -172,6 +173,12 @@ doc_events = {
     "Gate Entry":{
         "on_submit":[
             "nextfood.nextfood.doctype.gate_entry.gate_entry.update_purchase_receipt"
+           
+        ]
+    },
+    "Additional Salary":{
+        "validate":[
+            "nextfood.public.py.additional.create_stock_entries"
            
         ]
     }
