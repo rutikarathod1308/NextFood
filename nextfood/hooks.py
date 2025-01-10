@@ -56,7 +56,8 @@ doctype_js = {
             "Sales Invoice":"public/js/sales_invoice.js",
             "Work Order":"public/js/work_order.js",
             "Journal Entry":"public/js/journal_entry.js",
-            "Additional Salary":"public/js/additional_salary.js"
+            "Additional Salary":"public/js/additional_salary.js",
+            "Vehicle Log":"public/js/vehicle_log.js"
             }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -161,10 +162,16 @@ doc_events = {
         "on_cancel":"nextfood.public.py.purchase_receipt_snf_fat.after_cancel_fatkg_snfkg"
 
     },
+    "Stock Reconciliation":{
+        "on_submit":"nextfood.public.py.purchase_receipt_snf_fat.stock_rec_update_fatkg_snfkg",
+        "on_cancel":"nextfood.public.py.purchase_receipt_snf_fat.after_cancel_fatkg_snfkg"
+
+    },
+    
     "Stock Entry":{
-        "on_submit":[
+        "on_submit":
             "nextfood.public.py.purchase_receipt_snf_fat.after_stock_minus_fatkg_snfkg"
-            ],
+            ,
         "on_cancel":[
                      "nextfood.public.py.purchase_receipt_snf_fat.delivery_item_cancel"
                      ]
