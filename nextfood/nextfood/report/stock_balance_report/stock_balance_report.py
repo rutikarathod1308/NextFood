@@ -33,12 +33,8 @@ class StockBalanceFilter(TypedDict):
 
 
 SLEntry = dict[str, Any]
-
-
 def execute(filters: StockBalanceFilter | None = None):
 	return StockBalanceReport(filters).run()
-
-
 class StockBalanceReport:
 	def __init__(self, filters: StockBalanceFilter | None) -> None:
 		self.filters = filters
@@ -200,6 +196,8 @@ class StockBalanceReport:
 
 		if entry.voucher_type == "Stock Reconciliation" and (not entry.batch_no or entry.serial_no):
 			qty_diff = flt(entry.qty_after_transaction) - flt(qty_dict.bal_qty)
+			in_fat_kg_diff = flt(entry.custom_fat_kg) 
+			in_snf_kg_diff = flt(entry.custom_snf_kg)
 		else:
 			qty_diff = flt(entry.actual_qty)
 			in_fat_kg_diff = flt(entry.custom_fat_kg) 
