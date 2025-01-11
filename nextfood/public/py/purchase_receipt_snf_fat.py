@@ -190,8 +190,8 @@ def handle_warehouse_update(item, voucher_no, warehouse, is_source):
     # Extract and set default values
     bin_fat_kg = float(bin_detail.get('fat_kg', 0) or 0)
     bin_snf_kg = float(bin_detail.get('snf_kg', 0) or 0)
-    ledger_fat_kg = float(ledger_detail.get('custom_fat_kg', 0) or 0)
-    ledger_snf_kg = float(ledger_detail.get('custom_snf_kg', 0) or 0)
+    ledger_fat_kg = float(ledger_detail.get('custom_fat_kg_change', 0) or 0)
+    ledger_snf_kg = float(ledger_detail.get('custom_snf_kg_change', 0) or 0)
     item_fat_kg = float(item.custom_fat_kg or 0)
     item_snf_kg = float(item.custom_snf_kg or 0)
     bin_actual_qty = float(bin_detail.get('actual_qty', 0) or 0)
@@ -200,8 +200,16 @@ def handle_warehouse_update(item, voucher_no, warehouse, is_source):
         # Subtract values for s_warehouse
         updated_bin_fat_kg = bin_fat_kg - item_fat_kg
         updated_bin_snf_kg = bin_snf_kg - item_snf_kg
-        updated_ledger_fat_kg = ledger_fat_kg - item_fat_kg
-        updated_ledger_snf_kg = ledger_snf_kg - item_snf_kg
+        updated_ledger_fat_kg_minus = ledger_fat_kg - item_fat_kg
+        updated_ledger_snf_kg_minus = ledger_snf_kg - item_snf_kg
+        frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
+        
+        'custom_fat_kg_change': updated_ledger_fat_kg_minus if is_source else None,
+        'custom_snf_kg_change': updated_ledger_snf_kg_minus if is_source else None
+    })
+        # # Set ledger values for update
+        # updated_ledger_fat_kg = ledger_fat_kg - item_fat_kg
+        # updated_ledger_snf_kg = ledger_snf_kg - item_snf_kg
     else:
         # Add values for t_warehouse and calculate averages
         updated_bin_fat_kg = bin_fat_kg + item_fat_kg
@@ -225,12 +233,8 @@ def handle_warehouse_update(item, voucher_no, warehouse, is_source):
         'snf_kg': updated_bin_snf_kg
     })
 
-    frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
-        'custom_fat_kg': updated_ledger_fat_kg,
-        'custom_snf_kg': updated_ledger_snf_kg
-    })
- 
-                    
+    
+        
             
             
 
