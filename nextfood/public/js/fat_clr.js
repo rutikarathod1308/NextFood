@@ -27,7 +27,8 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn)
                     var to_date = new Date(r.milk_data[i].to_date);
     
                     // Check if posting_date is within from_date and to_date
-                    if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw ) {
+                    if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw && r.milk_data[i].supplier_group == frm.doc.custom_supplier_group
+                    ) {
                         // Convert dates to DD-MM-YYYY format
                         var formatted_from_date = formatDate(from_date);
                         var formatted_to_date = formatDate(to_date);
@@ -87,7 +88,7 @@ frappe.ui.form.on("Purchase Receipt",{
                             var to_date = new Date(r.milk_data[i].to_date);
             
                             // Check if posting_date is within from_date and to_date
-                            if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw ) {
+                            if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw && r.milk_data[i].supplier_group == frm.doc.custom_supplier_group ) {
                                 // Convert dates to DD-MM-YYYY format
                                 var formatted_from_date = formatDate(from_date);
                                 var formatted_to_date = formatDate(to_date);
@@ -154,7 +155,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn)
                     var to_date = new Date(r.milk_data[i].to_date);
     
                     // Check if posting_date is within from_date and to_date
-                    if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw ) {
+                    if (posting_date >= from_date && posting_date <= to_date && r.milk_data[i].bmcw == d.custom_bm_or_cw && r.milk_data[i].supplier_group == frm.doc.custom_supplier_group) {
                         // Convert dates to DD-MM-YYYY format
                         var formatted_from_date = formatDate(from_date);
                         var formatted_to_date = formatDate(to_date);

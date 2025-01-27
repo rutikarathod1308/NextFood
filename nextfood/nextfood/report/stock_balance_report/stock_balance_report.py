@@ -198,10 +198,14 @@ class StockBalanceReport:
 			qty_diff = flt(entry.qty_after_transaction) - flt(qty_dict.bal_qty)
 			in_fat_kg_diff = flt(entry.custom_fat_kg) 
 			in_snf_kg_diff = flt(entry.custom_snf_kg)
+			out_fat_kg_diff = flt(entry.custom_fat_kg_change) 
+			out_snf_kg_diff = flt(entry.custom_snf_kg_change)
 		else:
 			qty_diff = flt(entry.actual_qty)
 			in_fat_kg_diff = flt(entry.custom_fat_kg) 
 			in_snf_kg_diff = flt(entry.custom_snf_kg) 
+			out_fat_kg_diff = flt(entry.custom_fat_kg_change) 
+			out_snf_kg_diff = flt(entry.custom_snf_kg_change)
 
 		value_diff = flt(entry.stock_value_difference)
 
@@ -219,15 +223,15 @@ class StockBalanceReport:
 				
 			else:
 				qty_dict.out_qty += abs(qty_diff)
-				qty_dict.out_fat_kg += abs(in_fat_kg_diff)
-				qty_dict.out_snf_kg += abs(in_snf_kg_diff)
+				qty_dict.out_fat_kg += abs(out_fat_kg_diff)
+				qty_dict.out_snf_kg += abs(out_snf_kg_diff)
     			
 				
 
 		
 		qty_dict.bal_qty += qty_diff
-		qty_dict.bal_snf_kg += in_snf_kg_diff
-		qty_dict.bal_fat_kg += in_fat_kg_diff
+		qty_dict.bal_snf_kg += in_snf_kg_diff - abs(out_snf_kg_diff)
+		qty_dict.bal_fat_kg += in_fat_kg_diff - abs(out_fat_kg_diff)
 		
 
 	def initialize_data(self, item_warehouse_map, group_by_key, entry):
@@ -311,6 +315,8 @@ class StockBalanceReport:
 				sle.actual_qty,
 				sle.custom_fat_kg,
     			sle.custom_snf_kg,
+       			sle.custom_fat_kg_change,
+    			sle.custom_snf_kg_change,
 				sle.valuation_rate,
 				sle.company,
 				sle.voucher_type,

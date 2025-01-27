@@ -10,6 +10,7 @@
   "bmcw",
   "column_break_tqrr",
   "to_date",
+  "supplier_group",
   "section_break_obdi",
   "fatsnf_rate"
  ],
@@ -49,11 +50,18 @@
    "label": "BM/CW",
    "options": "\nBuffalo Milk\nCow Milk",
    "reqd": 1
+  },
+  {
+   "fieldname": "supplier_group",
+   "fieldtype": "Link",
+   "label": "Supplier Group",
+   "options": "Supplier Group",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-03 16:35:00.253834",
+ "modified": "2025-01-27 16:36:39.268792",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "MILK Rate",
