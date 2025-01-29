@@ -246,7 +246,63 @@ def delivery_item_cancel(doc, method):
                 {"is_delivered":0,"stock_entry":""}
             )
 
-                   
+    for item in doc.items:
+        # Handle both source and target warehouses
+        if item.s_warehouse and item.t_warehouse:
+            handle_warehouse_delete(item, doc.name, item.s_warehouse, is_source=True)
+            handle_warehouse_delete(item, doc.name, item.t_warehouse, is_source=False)
+        elif item.s_warehouse:
+            # Handle source warehouse only
+            handle_warehouse_delete(item, doc.name, item.s_warehouse, is_source=True)
+        elif item.t_warehouse:
+            # Handle target warehouse only
+            handle_warehouse_delete(item, doc.name, item.t_warehouse, is_source=False)
+
+
+def handle_warehouse_delete(item, voucher_no, warehouse, is_source):
+    # Get details from Bin and Stock Ledger Entry
+    bin_details = frappe.get_all("Bin", filters={'item_code': item.item_code, 'warehouse': warehouse}, fields=['*'])
+    ledger_details = frappe.get_all(
+        "Stock Ledger Entry",
+        filters={'item_code': item.item_code, 'warehouse': warehouse, 'voucher_no': voucher_no},
+        fields=['name', 'custom_fat_kg_change', 'custom_snf_kg_change']
+    )
+
+    if not bin_details or not ledger_details:
+        return  # Skip if no matching records found
+
+    bin_detail = bin_details[0]
+    ledger_detail = ledger_details[0]
+
+    # Extract existing values from SLE and Bin
+    ledger_fat_kg = float(ledger_detail.get('custom_fat_kg_change', 0) or 0)
+    ledger_snf_kg = float(ledger_detail.get('custom_snf_kg_change', 0) or 0)
+    item_fat_kg = float(item.custom_fat_kg or 0)
+    item_snf_kg = float(item.custom_snf_kg or 0)
+
+    if is_source:
+        # Subtract values for source warehouse
+        updated_ledger_fat_kg = ledger_fat_kg + item_fat_kg
+        updated_ledger_snf_kg = ledger_snf_kg + item_snf_kg
+
+        # Update only if there is a change in the values
+        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:
+            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
+                'custom_fat_kg_change': updated_ledger_fat_kg,
+                'custom_snf_kg_change': updated_ledger_snf_kg
+            })
+
+    else:
+        # Add values for target warehouse
+        updated_ledger_fat_kg = ledger_fat_kg - item_fat_kg
+        updated_ledger_snf_kg = ledger_snf_kg - item_snf_kg
+
+        # Update only if there is a change in the values
+        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:
+            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
+                'custom_fat_kg': updated_ledger_fat_kg,
+                'custom_snf_kg': updated_ledger_snf_kg
+            })                
                        
 def after_stock_cancel_fatkg_snfkg(doc, method):
     for item in doc.items:

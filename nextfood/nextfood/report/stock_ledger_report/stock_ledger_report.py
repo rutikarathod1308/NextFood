@@ -23,85 +23,106 @@ from erpnext.stock.utils import (
 
 
 def execute(filters=None):
-	is_reposting_item_valuation_in_progress()
-	include_uom = filters.get("include_uom")
-	columns = get_columns(filters)
-	items = get_items(filters)
-	sl_entries = get_stock_ledger_entries(filters, items)
-	item_details = get_item_details(items, sl_entries, include_uom)
-	if filters.get("batch_no"):
-		opening_row = get_opening_balance_from_batch(filters, columns, sl_entries)
-	else:
-		opening_row = get_opening_balance(filters, columns, sl_entries)
+    is_reposting_item_valuation_in_progress()
+    include_uom = filters.get("include_uom")
+    columns = get_columns(filters)
+    items = get_items(filters)
+    sl_entries = get_stock_ledger_entries(filters, items)
+    item_details = get_item_details(items, sl_entries, include_uom)
 
-	precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
-	bundle_details = {}
+    if filters.get("batch_no"):
+        opening_row = get_opening_balance_from_batch(filters, columns, sl_entries)
+    else:
+        opening_row = get_opening_balance(filters, columns, sl_entries)
 
-	if filters.get("segregate_serial_batch_bundle"):
-		bundle_details = get_serial_batch_bundle_details(sl_entries, filters)
+    precision = cint(frappe.db.get_single_value("System Settings", "float_precision"))
+    bundle_details = {}
 
-	data = []
-	conversion_factors = []
-	if opening_row:
-		data.append(opening_row)
-		conversion_factors.append(0)
+    if filters.get("segregate_serial_batch_bundle"):
+        bundle_details = get_serial_batch_bundle_details(sl_entries, filters)
 
-	actual_qty = stock_value = 0
-	if opening_row:
-		actual_qty = opening_row.get("qty_after_transaction")
-		stock_value = opening_row.get("stock_value")
+    data = []
+    conversion_factors = []
+    if opening_row:
+        data.append(opening_row)
+        conversion_factors.append(0)
 
-	available_serial_nos = {}
-	inventory_dimension_filters_applied = check_inventory_dimension_filters_applied(filters)
+    actual_qty = stock_value = 0
+    if opening_row:
+        actual_qty = opening_row.get("qty_after_transaction")
+        stock_value = opening_row.get("stock_value")
 
-	batch_balance_dict = frappe._dict({})
-	if actual_qty and filters.get("batch_no"):
-		batch_balance_dict[filters.batch_no] = [actual_qty, stock_value]
+    available_serial_nos = {}
+    inventory_dimension_filters_applied = check_inventory_dimension_filters_applied(filters)
 
-	for sle in sl_entries:
-		item_detail = item_details[sle.item_code]
+    batch_balance_dict = frappe._dict({})
+    if actual_qty and filters.get("batch_no"):
+        batch_balance_dict[filters.batch_no] = [actual_qty, stock_value]
 
-		sle.update(item_detail)
-		if bundle_info := bundle_details.get(sle.serial_and_batch_bundle):
-			data.extend(get_segregated_bundle_entries(sle, bundle_info, batch_balance_dict, filters))
-			continue
+    # Step 1: Sort Stock Ledger Entries by Date and Posting Time
+    sl_entries.sort(key=lambda x: (x.date, x.posting_time))
 
-		if filters.get("batch_no") or inventory_dimension_filters_applied:
-			actual_qty += flt(sle.actual_qty, precision)
-			stock_value += sle.stock_value_difference
-			if sle.batch_no:
-				if not batch_balance_dict.get(sle.batch_no):
-					batch_balance_dict[sle.batch_no] = [0, 0]
+    # Step 2: Maintain a running balance for each item-warehouse combination
+    running_balance = {}  # {(item_code, warehouse): {"fat": 0, "snf": 0}}
 
-				batch_balance_dict[sle.batch_no][0] += sle.actual_qty
+    for sle in sl_entries:
+        item_detail = item_details[sle.item_code]
+        sle.update(item_detail)
 
-			if filters.get("segregate_serial_batch_bundle"):
-				actual_qty = batch_balance_dict[sle.batch_no][0]
+        if bundle_info := bundle_details.get(sle.serial_and_batch_bundle):
+            data.extend(get_segregated_bundle_entries(sle, bundle_info, batch_balance_dict, filters))
+            continue
 
-			if sle.voucher_type == "Stock Reconciliation" and not sle.actual_qty:
-				actual_qty = sle.qty_after_transaction
-				stock_value = sle.stock_value
+        if filters.get("batch_no") or inventory_dimension_filters_applied:
+            actual_qty += flt(sle.actual_qty, precision)
+            stock_value += sle.stock_value_difference
+            if sle.batch_no:
+                if not batch_balance_dict.get(sle.batch_no):
+                    batch_balance_dict[sle.batch_no] = [0, 0]
+                batch_balance_dict[sle.batch_no][0] += sle.actual_qty
 
-			sle.update({"qty_after_transaction": actual_qty, "stock_value": stock_value})
+            if filters.get("segregate_serial_batch_bundle"):
+                actual_qty = batch_balance_dict[sle.batch_no][0]
 
-		sle.update({"in_qty": max(sle.actual_qty, 0), "out_qty": min(sle.actual_qty, 0)})
+            if sle.voucher_type == "Stock Reconciliation" and not sle.actual_qty:
+                actual_qty = sle.qty_after_transaction
+                stock_value = sle.stock_value
 
-		if sle.serial_no:
-			update_available_serial_nos(available_serial_nos, sle)
+            sle.update({"qty_after_transaction": actual_qty, "stock_value": stock_value})
 
-		if sle.actual_qty:
-			sle["in_out_rate"] = flt(sle.stock_value_difference / sle.actual_qty, precision)
+        # Step 3: Update `fatkg_after_transaction` and `snfkg_after_transaction` date-wise
+        key = (sle.item_code, sle.warehouse)
+        if key not in running_balance:
+            running_balance[key] = {"fat": 0, "snf": 0}  # Initialize running balance
 
-		elif sle.voucher_type == "Stock Reconciliation":
-			sle["in_out_rate"] = sle.valuation_rate
+        running_balance[key]["fat"] += sle.custom_fat_kg - abs(sle.custom_fat_kg_change)
+        running_balance[key]["snf"] += sle.custom_snf_kg - abs(sle.custom_snf_kg_change)
 
-		data.append(sle)
+        sle["fatkg_after_transaction"] = running_balance[key]["fat"]
+        sle["snfkg_after_transaction"] = running_balance[key]["snf"]
 
-		if include_uom:
-			conversion_factors.append(item_detail.conversion_factor)
+        sle.update({
+            "in_qty": max(sle.actual_qty, 0),
+            "out_qty": min(sle.actual_qty, 0),
+            "fatkg_after_transaction": sle["fatkg_after_transaction"],
+            "snfkg_after_transaction": sle["snfkg_after_transaction"]
+        })
 
-	update_included_uom_in_report(columns, data, include_uom, conversion_factors)
-	return columns, data
+        if sle.serial_no:
+            update_available_serial_nos(available_serial_nos, sle)
+
+        if sle.actual_qty:
+            sle["in_out_rate"] = flt(sle.stock_value_difference / sle.actual_qty, precision)
+        elif sle.voucher_type == "Stock Reconciliation":
+            sle["in_out_rate"] = sle.valuation_rate
+
+        data.append(sle)
+
+        if include_uom:
+            conversion_factors.append(item_detail.conversion_factor)
+
+    update_included_uom_in_report(columns, data, include_uom, conversion_factors)
+    return columns, data
 
 
 def get_segregated_bundle_entries(sle, bundle_details, batch_balance_dict, filters):
@@ -632,7 +653,7 @@ def get_opening_balance_from_batch(filters, columns, sl_entries):
 
 	return {
 		"item_code": _("'Opening'"),
-		# "qty_after_transaction": opening_data.qty_after_transaction,
+		"qty_after_transaction": opening_data.qty_after_transaction,
 		"valuation_rate": opening_data.valuation_rate,
 		"stock_value": opening_data.stock_value,
 	}
