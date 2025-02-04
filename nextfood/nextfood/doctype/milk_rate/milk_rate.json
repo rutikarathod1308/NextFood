@@ -47,8 +47,8 @@
   {
    "fieldname": "bmcw",
    "fieldtype": "Select",
-   "label": "BM/CW",
-   "options": "\nBuffalo Milk\nCow Milk",
+   "label": "BM/CM",
+   "options": "\nBuffalo Milk\nCow Milk\nMix Milk",
    "reqd": 1
   },
   {
@@ -61,7 +61,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-01-27 16:36:39.268792",
+ "modified": "2025-02-04 10:43:02.822679",
  "modified_by": "Administrator",
  "module": "Nextfood",
  "name": "MILK Rate",
