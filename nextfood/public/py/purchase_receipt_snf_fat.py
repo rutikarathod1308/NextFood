@@ -197,10 +197,10 @@ def handle_warehouse_update(item, voucher_no, warehouse, is_source):
     # Extract existing values from SLE and Bin
     ledger_fat_kg = float(ledger_detail.get('custom_fat_kg_change', 0) or 0)
     ledger_snf_kg = float(ledger_detail.get('custom_snf_kg_change', 0) or 0)
-    item_fat_kg = float(item.custom_fat_kg or 0)
-    item_snf_kg = float(item.custom_snf_kg or 0)
-    bin_fat_kg = float(bin_detail.get('fat_kg', 0) or 0)
-    bin_snf_kg = float(bin_detail.get('snf_kg', 0) or 0)
+    item_fat_kg = float((item.custom_fat_kg or 0) or 0)
+    item_snf_kg = float((item.custom_snf_kg or 0) or 0)
+    bin_fat_kg = float((bin_detail.get('fat_kg', 0) or 0) or 0)
+    bin_snf_kg = float((bin_detail.get('snf_kg', 0) or 0) or 0)
     
     if is_source:
         # Subtract values for source warehouse
@@ -226,13 +226,13 @@ def handle_warehouse_update(item, voucher_no, warehouse, is_source):
         updated_ledger_fat_kg = ledger_fat_kg + item_fat_kg
         updated_ledger_snf_kg = ledger_snf_kg + item_snf_kg
        
-        bin_ledger_fat_kg = bin_fat_kg + item_fat_kg
-        bin_ledger_snf_kg = bin_snf_kg + item_snf_kg
-        total_fat_kg = bin_fat_kg + item_fat_kg
-        total_snf_kg = bin_snf_kg + item_snf_kg
+        bin_ledger_fat_kg = float(bin_fat_kg + item_fat_kg) or 0 
+        bin_ledger_snf_kg = float(bin_snf_kg + item_snf_kg) or 0
+        total_fat_kg = float(bin_fat_kg + item_fat_kg) or 0
+        total_snf_kg = float(bin_snf_kg + item_snf_kg) or 0
         item_fat = float(bin_detail.get('actual_qty', 0) or 0)
         item_snf = float(bin_detail.get('actual_qty', 0) or 0)
-        custom_fat_total = (total_fat_kg / item_fat) * 100
+        custom_fat_total = float(total_fat_kg / item_fat) * 100
         custom_snf_total = (total_snf_kg / item_snf) * 100
         # Update only if there is a change in the values
         if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:

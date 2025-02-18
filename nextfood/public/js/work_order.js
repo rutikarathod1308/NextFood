@@ -42,10 +42,12 @@ frappe.ui.form.on("Work Order Item", "custom_milk_fat", function(frm, cdt, cdn) 
         });
         var cream_full_qty = custom_milk_items[0].bal_qty * item.custom_milk_fat / 100;
         var cream_fuly_qty = custom_milk_items[0].milk_qty * custom_milk_items[0].milk_fat / 100;
+        console.log(custom_milk_items[0].milk_qty * item.custom_milk_fat/ 100)
         var final_cream_qty = cream_full_qty - cream_fuly_qty;
         // Optional: Do something with the collected data
-        var per_bom_qty = final_cream_qty/frm.doc.qty
-        frappe.model.set_value(cdt, cdn, "required_qty", final_cream_qty || 0);
+        var cream_qty_per = final_cream_qty / item.custom_creat_percantange * 100
+        var per_bom_qty = cream_qty_per/frm.doc.qty
+        frappe.model.set_value(cdt, cdn, "required_qty", cream_qty_per || 0);
         frappe.model.set_value(cdt, cdn, "custom_per_bom_qty", per_bom_qty || 0);
         
     }
@@ -135,8 +137,9 @@ frappe.ui.form.on("Work Order Item", "custom_milk_fat", function(frm, cdt, cdn) 
         }
     });
     var cream_total_qty = frm.doc.qty - custom_milk_items[0].milk_qty
+    // console.log(custom_milk_items[0].milk_qty)
     var cream_qty = cream_total_qty * custom_milk_items[0].milk_fat / 100
-   
+    console.log(cream_total_qty)
     frappe.model.set_value(cdt, cdn, "custom_cream_qty", cream_qty);
 
     var smp_full_qty = custom_milk_items[0].bal_qty * item.custom_milk_snf / 100;
@@ -144,7 +147,7 @@ frappe.ui.form.on("Work Order Item", "custom_milk_fat", function(frm, cdt, cdn) 
     var final_smp_qty = smp_full_qty - smp_fuly_qty;
     var water_aq = custom_milk_items[0].milk_qty + final_smp_qty + cream_qty
     var water_qty = frm.doc.qty - water_aq;
-    console.log(water_aq)
+    // console.log(water_aq)
     frappe.model.set_value(cdt, cdn, "required_qty", water_qty);
     frappe.model.set_value(cdt, cdn, "custom_per_bom_qty", water_qty/frm.doc.qty || 0);
 
