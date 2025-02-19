@@ -72,8 +72,8 @@ def stock_rec_update_fatkg_snfkg(doc, method):
             item_snf = float(bin_detail.get('actual_qty', 0) or 0)
 
             # Calculate the updated totals
-            total_fat_kg =  item_fat_kg 
-            total_snf_kg =  item_snf_kg
+            total_fat_kg =  float(item_fat_kg) or 0
+            total_snf_kg =  float(item_snf_kg) or 0
 
             custom_fat_total = (total_fat_kg / item.qty) * 100 if item_fat else 0
             custom_snf_total = (total_snf_kg / item.qty) * 100 if item_snf else 0
@@ -94,8 +94,8 @@ def stock_rec_update_fatkg_snfkg(doc, method):
             ledger_item_fat = float(ledger_detail.get('actual_qty', 0) or 0)
             ledger_item_snf = float(ledger_detail.get('actual_qty', 0) or 0)
 
-            total_fat_kg_ledger = ledger_item_fat_kg
-            total_snf_kg_ledger = ledger_item_snf_kg
+            total_fat_kg_ledger = float(ledger_item_fat_kg) or 0
+            total_snf_kg_ledger = float(ledger_item_snf_kg) or 0
 
             custom_fat_total_ledger = (total_fat_kg_ledger / item.qty) * 100 if ledger_item_fat else 0
             custom_snf_total_ledger = (total_snf_kg_ledger / item.qty) * 100 if ledger_item_snf else 0
