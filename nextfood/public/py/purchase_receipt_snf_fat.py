@@ -178,74 +178,79 @@ def after_stock_minus_fatkg_snfkg(doc, method):
             handle_warehouse_update(item, doc.name, item.t_warehouse, is_source=False)
 
 
-def handle_warehouse_update(item, voucher_no, warehouse, is_source):
-    
-    # Get details from Bin and Stock Ledger Entry
-    bin_details = frappe.get_all("Bin", filters={'item_code': item.item_code, 'warehouse': warehouse}, fields=['*'])
-    ledger_details = frappe.get_all(
-        "Stock Ledger Entry",
-        filters={'item_code': item.item_code, 'warehouse': warehouse, 'voucher_no': voucher_no},
-        fields=['name', 'custom_fat_kg_change', 'custom_snf_kg_change']
-    )
 
-    if not bin_details or not ledger_details:
-        return  # Skip if no matching records found
 
-    bin_detail = bin_details[0]
-    ledger_detail = ledger_details[0]
+def handle_warehouse_update(item, voucher_no, warehouse, is_source):  
+    # Get details from Bin and Stock Ledger Entry  
+    bin_details = frappe.get_all("Bin", filters={'item_code': item.item_code, 'warehouse': warehouse}, fields=['*'])  
+    ledger_details = frappe.get_all(  
+        "Stock Ledger Entry",  
+        filters={'item_code': item.item_code, 'warehouse': warehouse, 'voucher_no': voucher_no},  
+        fields=['name', 'custom_fat_kg_change', 'custom_snf_kg_change']  
+    )  
 
-    # Extract existing values from SLE and Bin
-    ledger_fat_kg = float(ledger_detail.get('custom_fat_kg_change', 0) or 0)
-    ledger_snf_kg = float(ledger_detail.get('custom_snf_kg_change', 0) or 0)
-    item_fat_kg = float((item.custom_fat_kg or 0) or 0)
-    item_snf_kg = float((item.custom_snf_kg or 0) or 0)
-    bin_fat_kg = float((bin_detail.get('fat_kg', 0) or 0) or 0)
-    bin_snf_kg = float((bin_detail.get('snf_kg', 0) or 0) or 0)
-    
-    if is_source:
-        # Subtract values for source warehouse
-        updated_ledger_fat_kg = ledger_fat_kg - item_fat_kg
-        updated_ledger_snf_kg = ledger_snf_kg - item_snf_kg
-        
-        bin_ledger_fat_kg = bin_fat_kg - item_fat_kg
-        bin_ledger_snf_kg = bin_snf_kg - item_snf_kg
-        # Update only if there is a change in the values
-        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:
-            
-            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
-                'custom_fat_kg_change': updated_ledger_fat_kg,
-                'custom_snf_kg_change': updated_ledger_snf_kg
-            })
-            frappe.db.set_value("Bin", bin_detail.name, {
-                'fat_kg': bin_ledger_fat_kg,
-                'snf_kg': bin_ledger_snf_kg
-            })
+    if not bin_details or not ledger_details:  
+        return  # Skip if no matching records found  
 
-    else:
-        # Add values for target warehouse
-        updated_ledger_fat_kg = ledger_fat_kg + item_fat_kg
-        updated_ledger_snf_kg = ledger_snf_kg + item_snf_kg
-       
-        bin_ledger_fat_kg = float(bin_fat_kg + item_fat_kg) or 0 
-        bin_ledger_snf_kg = float(bin_snf_kg + item_snf_kg) or 0
-        total_fat_kg = float(bin_fat_kg + item_fat_kg) or 0
-        total_snf_kg = float(bin_snf_kg + item_snf_kg) or 0
-        item_fat = float(bin_detail.get('actual_qty', 0) or 0)
-        item_snf = float(bin_detail.get('actual_qty', 0) or 0)
-        custom_fat_total = float(total_fat_kg / item_fat) * 100
-        custom_snf_total = (total_snf_kg / item_snf) * 100
-        # Update only if there is a change in the values
-        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:
-            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {
-                'custom_fat_kg': updated_ledger_fat_kg,
-                'custom_snf_kg': updated_ledger_snf_kg,
-                'custom_fat':custom_fat_total,
-                'custom_snf':custom_snf_total
-            })
-            frappe.db.set_value("Bin", bin_detail.name, {
-                'fat_kg': bin_ledger_fat_kg,
-                'snf_kg': bin_ledger_snf_kg
-            })
+    bin_detail = bin_details[0]  
+    ledger_detail = ledger_details[0]  
+
+    # Extract existing values from SLE and Bin  
+    ledger_fat_kg = float(ledger_detail.get('custom_fat_kg_change', 0) or 0)  
+    ledger_snf_kg = float(ledger_detail.get('custom_snf_kg_change', 0) or 0)  
+    item_fat_kg = float((item.custom_fat_kg or 0) or 0)  
+    item_snf_kg = float((item.custom_snf_kg or 0) or 0)  
+    bin_fat_kg = float((bin_detail.get('fat_kg', 0) or 0) or 0)  
+    bin_snf_kg = float((bin_detail.get('snf_kg', 0) or 0) or 0)  
+
+    if is_source:  
+        # Subtract values for source warehouse  
+        updated_ledger_fat_kg = ledger_fat_kg - item_fat_kg  
+        updated_ledger_snf_kg = ledger_snf_kg - item_snf_kg  
+
+        bin_ledger_fat_kg = bin_fat_kg - item_fat_kg  
+        bin_ledger_snf_kg = bin_snf_kg - item_snf_kg  
+
+        # Update only if there is a change in the values  
+        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:  
+            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {  
+                'custom_fat_kg_change': updated_ledger_fat_kg,  
+                'custom_snf_kg_change': updated_ledger_snf_kg  
+            })  
+            frappe.db.set_value("Bin", bin_detail.name, {  
+                'fat_kg': bin_ledger_fat_kg,  
+                'snf_kg': bin_ledger_snf_kg  
+            })  
+
+    else:  
+        # Add values for target warehouse  
+        updated_ledger_fat_kg = ledger_fat_kg + item_fat_kg  
+        updated_ledger_snf_kg = ledger_snf_kg + item_snf_kg  
+
+        bin_ledger_fat_kg = bin_fat_kg + item_fat_kg  
+        bin_ledger_snf_kg = bin_snf_kg + item_snf_kg  
+        total_fat_kg = bin_fat_kg + item_fat_kg  
+        total_snf_kg = bin_snf_kg + item_snf_kg  
+
+        item_fat = float(bin_detail.get('actual_qty', 0) or 0)  
+        item_snf = float(bin_detail.get('actual_qty', 0) or 0)  
+
+        # Ensure no division by zero  
+        custom_fat_total = (total_fat_kg / item_fat) * 100 if item_fat != 0 else 0  
+        custom_snf_total = (total_snf_kg / item_snf) * 100 if item_snf != 0 else 0  
+
+        # Update only if there is a change in the values  
+        if ledger_fat_kg != updated_ledger_fat_kg or ledger_snf_kg != updated_ledger_snf_kg:  
+            frappe.db.set_value("Stock Ledger Entry", ledger_detail.name, {  
+                'custom_fat_kg_change': updated_ledger_fat_kg,  
+                'custom_snf_kg_change': updated_ledger_snf_kg,  
+                'custom_fat': custom_fat_total,  
+                'custom_snf': custom_snf_total  
+            })  
+            frappe.db.set_value("Bin", bin_detail.name, {  
+                'fat_kg': bin_ledger_fat_kg,  
+                'snf_kg': bin_ledger_snf_kg  
+            })  
 
 def delivery_item_cancel(doc, method):
     if doc.stock_entry_type == "Crates Return":
