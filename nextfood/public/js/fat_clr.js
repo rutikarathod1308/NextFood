@@ -3,7 +3,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_clr", function(frm, cdt, cdn)
     var d = locals[cdt][cdn];
 
         
-                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + frm.doc.custom_snf).toFixed(2);
+    var a = ((d.custom_fat + d.custom_clr)/4+frm.doc.custom_snf).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
     var b = (d.qty * a / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf_kg", b);
@@ -127,7 +127,7 @@ frappe.ui.form.on("Purchase Receipt Item", "custom_fat", function(frm, cdt, cdn)
    
        
                 
-                var a = (d.custom_clr / 4 + 0.2 * d.custom_fat + frm.doc.custom_snf).toFixed(2);
+                var a = ((d.custom_fat + d.custom_clr)/4+frm.doc.custom_snf).toFixed(2);;
     frappe.model.set_value(cdt, cdn, "custom_snf", a);
     var b = (d.qty * a / 100).toFixed(2);
     frappe.model.set_value(cdt, cdn, "custom_snf_kg", b);
@@ -219,7 +219,7 @@ frappe.ui.form.on("Purchase Receipt", {
                     frm.clear_table("items");
 
                     for (var i = 0; i < len; i++) {
-                        var a = (stock_items[i].clr / 4 + 0.2 * stock_items[i].fat + stock_items[i].snf).toFixed(2);
+                        var a = ((stock_items[i].clr + stock_items[i].fat )/4+stock_items[i].snf).toFixed(2);
                         var b = (stock_items[i].qty * a / 100).toFixed(2);
                         var c = (stock_items[i].qty * stock_items[i].fat / 100).toFixed(2);
                         var row = frm.add_child("items");

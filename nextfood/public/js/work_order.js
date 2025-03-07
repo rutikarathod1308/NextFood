@@ -139,7 +139,7 @@ frappe.ui.form.on("Work Order Item", "custom_milk_fat", function(frm, cdt, cdn) 
     var cream_total_qty = frm.doc.qty - custom_milk_items[0].milk_qty
     // console.log(custom_milk_items[0].milk_qty)
     var cream_qty = cream_total_qty * custom_milk_items[0].milk_fat / 100
-    console.log(cream_total_qty)
+    console.log(cream_qty)
     frappe.model.set_value(cdt, cdn, "custom_cream_qty", cream_qty);
 
     var smp_full_qty = custom_milk_items[0].bal_qty * item.custom_milk_snf / 100;
