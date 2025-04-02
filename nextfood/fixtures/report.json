@@ -178,6 +178,55 @@
   "timeout": 0
  },
  {
+  "add_total_row": 1,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"filters\":[],\"fields\":[[\"name\",\"Purchase Receipt\"],[\"docstatus\",\"Purchase Receipt\"],[\"posting_date\",\"Purchase Receipt\"],[\"supplier\",\"Purchase Receipt\"],[\"item_code\",\"Purchase Receipt Item\"],[\"custom_bm_or_cw\",\"Purchase Receipt Item\"],[\"received_qty\",\"Purchase Receipt Item\"],[\"custom_fat_kg\",\"Purchase Receipt Item\"],[\"custom_snf_kg\",\"Purchase Receipt Item\"],[\"rate\",\"Purchase Receipt Item\"],[\"amount\",\"Purchase Receipt Item\"]],\"order_by\":\"`tabPurchase Receipt`.`modified` desc\",\"add_totals_row\":true,\"page_length\":20,\"column_widths\":{\"name\":120,\"posting_date\":100,\"supplier\":150,\"Purchase Receipt Item:item_code\":100,\"Purchase Receipt Item:custom_bm_or_cw\":120,\"Purchase Receipt Item:received_qty\":100,\"Purchase Receipt Item:custom_fat_kg\":120,\"Purchase Receipt Item:custom_snf_kg\":120,\"Purchase Receipt Item:rate\":100,\"Purchase Receipt Item:amount\":120},\"group_by\":null}",
+  "letter_head": null,
+  "modified": "2025-04-02 11:21:40.526879",
+  "module": "Nextfood",
+  "name": "Purchase Receipt Daily Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Purchase Receipt",
+  "reference_report": null,
+  "report_name": "Purchase Receipt Daily Report",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Purchase Receipt Daily Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Purchase Receipt Daily Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Purchase Receipt Daily Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Purchase Receipt Daily Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
   "add_total_row": 0,
   "columns": [],
   "disabled": 0,
